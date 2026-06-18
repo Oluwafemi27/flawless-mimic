@@ -110,9 +110,9 @@ function Participate() {
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <a href="/" className="flex items-center gap-2.5">
-            <svg className="h-9 w-9" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 4h16v2H4V4zm3 4h2v10H7V8zm5 0h2v10h-2V8zm5 0h2v10h-2V8z" fill="currentColor" />
-              <path d="M8 3h8L10 8H8L8 3zm8 0l-6 5h2l6-5z" fill="currentColor" />
+            <svg className="h-9 w-9" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2 C12 2, 4 4, 4 7 C4 9, 6 10, 8 9.5 L12 2 L16 9.5 C18 10, 20 9, 20 7 C20 4, 12 2, 12 2 Z"/>
+              <path d="M9 10 L8 22 C8 22, 12 24, 12 24 C12 24, 16 22, 16 22 L15 10 Z" />
             </svg>
             <span className="text-lg font-semibold tracking-tight">
               Tesla <span className="text-primary">Motors</span>
