@@ -99,7 +99,6 @@ function Index() {
   const [currentTxIndex, setCurrentTxIndex] = useState(0);
   const [showNotification, setShowNotification] = useState(true);
   const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
 
   // Handle swipe to dismiss
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -107,11 +106,7 @@ function Index() {
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    setTouchEnd(e.changedTouches[0].clientX);
-    handleSwipe(e);
-  };
-
-  const handleSwipe = (e: React.TouchEvent) => {
+    const touchEnd = e.changedTouches[0].clientX;
     const swipeDistance = touchStart - touchEnd;
     if (Math.abs(swipeDistance) > 50) {
       setShowNotification(false);
@@ -124,6 +119,8 @@ function Index() {
 
   // Auto-rotate transactions with popup show/hide
   useEffect(() => {
+    const timers: NodeJS.Timeout[] = [];
+
     const cycle = () => {
       setShowNotification(true);
       const showTimer = setTimeout(() => {
@@ -131,27 +128,18 @@ function Index() {
         const hideTimer = setTimeout(() => {
           setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
         }, 400);
-        return () => clearTimeout(hideTimer);
+        timers.push(hideTimer);
       }, 3500);
-      return () => clearTimeout(showTimer);
+      timers.push(showTimer);
     };
 
     cycle();
-    const rotateInterval = setInterval(() => {
-      setShowNotification(true);
-      const showTimer = setTimeout(() => {
-        setShowNotification(false);
-        const hideTimer = setTimeout(() => {
-          setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
-        }, 400);
-        return () => clearTimeout(hideTimer);
-      }, 3500);
-      return () => {
-        clearTimeout(showTimer);
-      };
-    }, 3900);
+    const rotateInterval = setInterval(cycle, 3900);
 
-    return () => clearInterval(rotateInterval);
+    return () => {
+      clearInterval(rotateInterval);
+      timers.forEach(clearTimeout);
+    };
   }, []);
 
   const currentTx = transactions[currentTxIndex];
@@ -254,7 +242,7 @@ function Index() {
             <a href="#instructions" className="hover:text-foreground">
               How It Works
             </a>
-            <a href="#participate" className="hover:text-foreground">
+            <a href="#models" className="hover:text-foreground">
               Claim Free Car
             </a>
             <a href="#deliveries" className="hover:text-foreground">

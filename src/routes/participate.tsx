@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Zap, Check } from "lucide-react";
+import { useState } from "react";
 import sedanRed from "@/assets/sedan-red.jpg";
 import sedanSilver from "@/assets/sedan-silver.jpg";
 import sedanBlue from "@/assets/sedan-blue.jpg";
@@ -79,6 +80,30 @@ const vehicleOptions = [
 ];
 
 function Participate() {
+  const [selectedVehicle, setSelectedVehicle] = useState(vehicleOptions[0]);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    address: "",
+    phone: "",
+    country: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormData({ fullName: "", email: "", address: "", phone: "", country: "" });
+    }, 3000);
+  };
+
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       {/* Header */}
@@ -166,9 +191,14 @@ function Participate() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {vehicleOptions.map((vehicle, idx) => (
-              <div
+              <button
                 key={idx}
-                className="group relative rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow"
+                onClick={() => setSelectedVehicle(vehicle)}
+                className={`group relative rounded-2xl overflow-hidden border transition-all text-left ${
+                  selectedVehicle.name === vehicle.name
+                    ? "border-primary shadow-lg ring-2 ring-primary/50"
+                    : "border-border hover:shadow-lg"
+                }`}
               >
                 {/* Header with badge */}
                 <div className="relative h-48 overflow-hidden bg-gradient-to-br from-muted to-muted/50">
@@ -220,13 +250,8 @@ function Participate() {
                     </p>
                   </div>
 
-                  {/* CTA Button */}
-                  <button className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:bg-primary-glow transition-colors flex items-center justify-center gap-2">
-                    🚗 Claim This Model
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
 
@@ -249,77 +274,99 @@ function Participate() {
             Claim Your <span className="text-primary">Tesla</span> Today
           </h2>
 
-          <form className="bg-card rounded-2xl border border-border p-8 space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold mb-2">Full Name</label>
-                <input
-                  type="text"
-                  placeholder="John Doe"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2">Email Address</label>
-                <input
-                  type="email"
-                  placeholder="john@example.com"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold mb-2">Delivery Address</label>
-              <input
-                type="text"
-                placeholder="123 Main Street, City, Country"
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold mb-2">Phone Number</label>
-                <input
-                  type="tel"
-                  placeholder="+1 (555) 000-0000"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2">Country</label>
-                <select className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option>Select Country</option>
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>United Kingdom</option>
-                  <option>Australia</option>
-                  <option>Other</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="bg-muted rounded-lg p-4 text-sm">
-              <p className="font-semibold text-foreground mb-2">Selected Vehicle: Tesla V3</p>
+          {submitted ? (
+            <div className="bg-card rounded-2xl border border-success/50 bg-success/10 p-8 text-center">
+              <div className="text-4xl mb-4">✅</div>
+              <h3 className="text-xl font-bold text-foreground mb-2">Claim Submitted!</h3>
               <p className="text-muted-foreground">
-                Delivery Fee: <span className="text-primary font-bold">$299</span>
+                Thank you! We've received your claim for the {selectedVehicle.name}. You'll receive a confirmation email shortly.
               </p>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="bg-card rounded-2xl border border-border p-8 space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Full Name</label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    placeholder="John Doe"
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="john@example.com"
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
 
-            <button
-              type="submit"
-              className="w-full bg-primary text-primary-foreground font-bold py-4 rounded-lg hover:bg-primary-glow transition-colors flex items-center justify-center gap-2 text-lg"
-            >
-              🚗 Claim Your Tesla Now
-              <ArrowRight className="h-5 w-5" />
-            </button>
+              <div>
+                <label className="block text-sm font-semibold mb-2">Delivery Address</label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  placeholder="123 Main Street, City, Country"
+                  className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
 
-            <p className="text-xs text-muted-foreground text-center">
-              By clicking "Claim", you agree to our Terms of Service and Privacy Policy. No spam,
-              just your vehicle delivery updates.
-            </p>
-          </form>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Phone Number</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="+1 (555) 000-0000"
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Country</label>
+                  <select name="country" value={formData.country} onChange={handleInputChange} className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option>Select Country</option>
+                    <option>United States</option>
+                    <option>Canada</option>
+                    <option>United Kingdom</option>
+                    <option>Australia</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="bg-muted rounded-lg p-4 text-sm">
+                <p className="font-semibold text-foreground mb-2">Selected Vehicle: {selectedVehicle.name}</p>
+                <p className="text-muted-foreground">
+                  Delivery Fee: <span className="text-primary font-bold">{selectedVehicle.fee}</span>
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-primary text-primary-foreground font-bold py-4 rounded-lg hover:bg-primary-glow transition-colors flex items-center justify-center gap-2 text-lg"
+              >
+                🚗 Claim Your Tesla Now
+                <ArrowRight className="h-5 w-5" />
+              </button>
+
+              <p className="text-xs text-muted-foreground text-center">
+                By clicking "Claim", you agree to our Terms of Service and Privacy Policy. No spam,
+                just your vehicle delivery updates.
+              </p>
+            </form>
+          )}
         </div>
       </section>
 
@@ -341,8 +388,8 @@ function Participate() {
                   </a>
                 </li>
                 <li>
-                  <a href="/#tech" className="hover:underline">
-                    Technology
+                  <a href="/participate" className="hover:underline">
+                    Claim Car
                   </a>
                 </li>
               </ul>
