@@ -107,7 +107,7 @@ function Index() {
               <Zap className="h-5 w-5" strokeWidth={2.5} />
             </div>
             <span className="text-lg font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-              Tesla <span className="text-primary">Motors</span>
+              Tesla
             </span>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
