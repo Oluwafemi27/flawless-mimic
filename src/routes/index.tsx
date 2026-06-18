@@ -107,9 +107,9 @@ function Index() {
         setShowNotification(false);
         const hideTimer = setTimeout(() => {
           setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
-        }, 1000);
+        }, 400);
         return () => clearTimeout(hideTimer);
-      }, 4000);
+      }, 3500);
       return () => clearTimeout(showTimer);
     };
 
@@ -120,13 +120,13 @@ function Index() {
         setShowNotification(false);
         const hideTimer = setTimeout(() => {
           setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
-        }, 1000);
+        }, 400);
         return () => clearTimeout(hideTimer);
-      }, 4000);
+      }, 3500);
       return () => {
         clearTimeout(showTimer);
       };
-    }, 5000);
+    }, 3900);
 
     return () => clearInterval(rotateInterval);
   }, []);
@@ -162,12 +162,12 @@ function Index() {
 
       {/* Live Delivery Notification Card - Popup Mode */}
       {showNotification && (
-        <div className="fixed top-20 left-0 right-0 z-50 px-4 pointer-events-none animate-in fade-in slide-in-from-top-2 duration-300">
-          <div className="mx-auto max-w-md bg-white rounded-xl shadow-xl border border-gray-100 p-3 pointer-events-auto">
+        <div className="fixed top-20 left-0 right-0 z-50 px-4 pointer-events-none animate-in fade-in slide-in-from-top-2 duration-150">
+          <div className="mx-auto max-w-md bg-white rounded-lg shadow-lg border border-gray-100 px-3 py-2 pointer-events-auto">
             {/* Header with avatar */}
-            <div className="flex items-start gap-2 mb-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-full flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 className="w-5 h-5 text-white" />
+            <div className="flex items-start gap-2 mb-1">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary rounded-full flex items-center justify-center flex-shrink-0">
+                <CheckCircle2 className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-foreground text-xs truncate">{currentTx.name}</p>
@@ -176,20 +176,38 @@ function Index() {
             </div>
 
             {/* Message */}
-            <p className="text-xs text-muted-foreground mb-0.5">Just paid delivery fee for</p>
-            <p className="text-xs font-bold text-primary mb-2">{currentTx.model}</p>
+            <p className="text-xs text-muted-foreground mb-0.5 ml-10">Just paid delivery fee for</p>
+            <p className="text-xs font-bold text-primary mb-1 ml-10">{currentTx.model}</p>
 
             {/* Confirmation */}
-            <p className="text-xs font-bold text-success mb-1">🚗 Car confirmed & dispatched!</p>
-            <p className="text-xs font-bold text-success mb-2">({currentTx.fee} fee paid)</p>
+            <p className="text-xs font-bold text-success mb-0.5 ml-10">
+              🚗 Car confirmed & dispatched!
+            </p>
+            <p className="text-xs font-bold text-success mb-1.5 ml-10">
+              ({currentTx.fee} fee paid)
+            </p>
 
             {/* Progress bar */}
-            <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
-              <div className="h-full bg-primary rounded-full" style={{ width: "84%" }} />
+            <div className="h-0.5 bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-full bg-primary rounded-full drain-progress" />
             </div>
           </div>
         </div>
       )}
+
+      <style>{`
+        @keyframes drainBar {
+          from {
+            width: 100%;
+          }
+          to {
+            width: 0%;
+          }
+        }
+        .drain-progress {
+          animation: drainBar 3.5s linear forwards;
+        }
+      `}</style>
 
       {/* Nav */}
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
