@@ -12,7 +12,8 @@ export const Route = createFileRoute("/participate")({
       { title: "Claim Your Tesla — Free Electric Vehicle" },
       {
         name: "description",
-        content: "Register to claim your free Tesla electric vehicle. Choose from V3, VY, VS Plaid, or VX models.",
+        content:
+          "Register to claim your free Tesla electric vehicle. Choose from V3, VY, VS Plaid, or VX models.",
       },
     ],
   }),
@@ -111,12 +112,19 @@ function Participate() {
             Claim Your <span className="text-primary">Free Tesla</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Tesla is giving away brand-new electric vehicles worldwide. Choose your model, pay the delivery fee, and receive your vehicle within 14 days.
+            Tesla is giving away brand-new electric vehicles worldwide. Choose your model, pay the
+            delivery fee, and receive your vehicle within 14 days.
           </p>
           <div className="flex items-center justify-center gap-4 text-sm font-medium mb-12">
-            <span className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> 100% Free Vehicle</span>
-            <span className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> One-Time Delivery Fee</span>
-            <span className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> 7–14 Day Delivery</span>
+            <span className="flex items-center gap-2">
+              <Check className="h-4 w-4 text-primary" /> 100% Free Vehicle
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="h-4 w-4 text-primary" /> One-Time Delivery Fee
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="h-4 w-4 text-primary" /> 7–14 Day Delivery
+            </span>
           </div>
         </div>
       </section>
@@ -126,13 +134,17 @@ function Participate() {
         <div className="mx-auto max-w-7xl px-5">
           <div className="grid md:grid-cols-2 gap-8">
             <div className="text-center md:text-left">
-              <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Event Ends In</p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+                Event Ends In
+              </p>
               <p className="text-3xl md:text-4xl font-bold tracking-tight font-mono">
                 11 HRS : 42 MIN : 33 SEC
               </p>
             </div>
             <div className="text-center md:text-right">
-              <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Participants</p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+                Participants
+              </p>
               <p className="text-3xl md:text-4xl font-bold tracking-tight">
                 12,847 <span className="text-primary">joined</span>
               </p>
@@ -148,7 +160,8 @@ function Participate() {
             Choose Your <span className="text-primary">Tesla</span>
           </h2>
           <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-            All vehicles are brand new 2025 models. Select your preferred model and proceed to claim.
+            All vehicles are brand new 2025 models. Select your preferred model and proceed to
+            claim.
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -171,7 +184,9 @@ function Participate() {
 
                 {/* Content */}
                 <div className="p-6">
-                  <p className="text-xs font-semibold text-primary uppercase mb-2">{vehicle.type}</p>
+                  <p className="text-xs font-semibold text-primary uppercase mb-2">
+                    {vehicle.type}
+                  </p>
                   <h3 className="text-lg font-bold mb-4">{vehicle.name}</h3>
 
                   {/* Specs */}
@@ -196,9 +211,13 @@ function Participate() {
 
                   {/* Delivery Fee */}
                   <div className="rounded-lg bg-muted p-4 mb-4 border border-border">
-                    <p className="text-xs font-semibold text-muted-foreground mb-1">One-Time Delivery Fee</p>
+                    <p className="text-xs font-semibold text-muted-foreground mb-1">
+                      One-Time Delivery Fee
+                    </p>
                     <p className="text-2xl font-bold text-primary">{vehicle.fee}</p>
-                    <p className="text-xs text-muted-foreground mt-2">Covers shipping, customs & logistics</p>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Covers shipping, customs & logistics
+                    </p>
                   </div>
 
                   {/* CTA Button */}
@@ -283,7 +302,9 @@ function Participate() {
 
             <div className="bg-muted rounded-lg p-4 text-sm">
               <p className="font-semibold text-foreground mb-2">Selected Vehicle: Tesla V3</p>
-              <p className="text-muted-foreground">Delivery Fee: <span className="text-primary font-bold">$299</span></p>
+              <p className="text-muted-foreground">
+                Delivery Fee: <span className="text-primary font-bold">$299</span>
+              </p>
             </div>
 
             <button
@@ -295,7 +316,8 @@ function Participate() {
             </button>
 
             <p className="text-xs text-muted-foreground text-center">
-              By clicking "Claim", you agree to our Terms of Service and Privacy Policy. No spam, just your vehicle delivery updates.
+              By clicking "Claim", you agree to our Terms of Service and Privacy Policy. No spam,
+              just your vehicle delivery updates.
             </p>
           </form>
         </div>
@@ -308,33 +330,96 @@ function Participate() {
             <div>
               <h3 className="font-bold mb-4">Tesla</h3>
               <ul className="space-y-2 text-sm">
-                <li><a href="/" className="hover:underline">Home</a></li>
-                <li><a href="/#models" className="hover:underline">Vehicles</a></li>
-                <li><a href="/#tech" className="hover:underline">Technology</a></li>
+                <li>
+                  <a href="/" className="hover:underline">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="/#models" className="hover:underline">
+                    Vehicles
+                  </a>
+                </li>
+                <li>
+                  <a href="/#tech" className="hover:underline">
+                    Technology
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h3 className="font-bold mb-4">Giveaway</h3>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:underline">How It Works</a></li>
-                <li><a href="#" className="hover:underline">FAQs</a></li>
-                <li><a href="#" className="hover:underline">Terms</a></li>
+                <li>
+                  <a href="#" className="hover:underline">
+                    How It Works
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:underline">
+                    FAQs
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:underline">
+                    Terms
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h3 className="font-bold mb-4">Support</h3>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:underline">Contact Us</a></li>
-                <li><a href="#" className="hover:underline">Help Center</a></li>
-                <li><a href="#" className="hover:underline">Privacy</a></li>
+                <li>
+                  <a href="#" className="hover:underline">
+                    Contact Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:underline">
+                    Help Center
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:underline">
+                    Privacy
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h3 className="font-bold mb-4">Follow Us</h3>
               <ul className="space-y-2 text-sm">
-                <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:underline">Twitter</a></li>
-                <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:underline">Facebook</a></li>
-                <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:underline">Instagram</a></li>
+                <li>
+                  <a
+                    href="https://twitter.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    Twitter
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    Facebook
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    Instagram
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
