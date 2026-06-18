@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ShieldCheck,
   Lock,
@@ -67,7 +67,7 @@ function Index() {
   const [currentTxIndex, setCurrentTxIndex] = useState(0);
 
   // Auto-rotate transactions
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
     }, 3000);
