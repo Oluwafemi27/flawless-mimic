@@ -88,13 +88,13 @@ function Index() {
         </div>
       </div>
 
-      {/* Live Delivery Notification Card */}
-      <div className="fixed top-24 left-6 z-50 max-w-xs w-full pointer-events-none">
-        <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 pointer-events-auto">
+      {/* Live Delivery Notification Card - Popup Mode */}
+      <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-[calc(100%-32px)] max-w-sm pointer-events-none animate-in fade-in slide-in-from-top-4 duration-500">
+        <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-5 pointer-events-auto">
           {/* Header with avatar */}
-          <div className="flex items-start gap-3 mb-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-full flex items-center justify-center flex-shrink-0">
-              <CheckCircle2 className="w-5 h-5 text-white" />
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary rounded-full flex items-center justify-center flex-shrink-0">
+              <CheckCircle2 className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
               <p className="font-bold text-foreground text-sm">{currentTx.name}</p>
@@ -104,15 +104,15 @@ function Index() {
 
           {/* Message */}
           <p className="text-sm text-muted-foreground mb-1">Just paid delivery fee for</p>
-          <p className="text-sm font-bold text-primary mb-2">{currentTx.model}</p>
+          <p className="text-sm font-bold text-primary mb-3">{currentTx.model}</p>
 
           {/* Confirmation */}
           <p className="text-sm font-bold text-success mb-1">🚗 Car confirmed & dispatched!</p>
-          <p className="text-sm font-bold text-success mb-3">({currentTx.fee} fee paid)</p>
+          <p className="text-sm font-bold text-success mb-4">({currentTx.fee} fee paid)</p>
 
           {/* Progress bar */}
-          <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
-            <div className="h-full bg-primary rounded-full" style={{ width: "75%" }} />
+          <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div className="h-full bg-primary rounded-full" style={{ width: "84%" }} />
           </div>
         </div>
       </div>
