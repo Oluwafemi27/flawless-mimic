@@ -9,10 +9,10 @@ import suvBlack from "@/assets/suv-black.jpg";
 export const Route = createFileRoute("/participate")({
   head: () => ({
     meta: [
-      { title: "Claim Your Volthaus — Free Electric Vehicle" },
+      { title: "Claim Your Tesla — Free Electric Vehicle" },
       {
         name: "description",
-        content: "Register to claim your free Volthaus electric vehicle. Choose from V3, VY, VS Plaid, or VX models.",
+        content: "Register to claim your free Tesla electric vehicle. Choose from V3, VY, VS Plaid, or VX models.",
       },
     ],
   }),
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/participate")({
 
 const vehicleOptions = [
   {
-    name: "Volthaus V3",
+    name: "Tesla V3",
     type: "Performance Sedan",
     badge: "🏆 Most Popular",
     power: "510 hp Dual Motor",
@@ -32,7 +32,7 @@ const vehicleOptions = [
     img: sedanSilver,
   },
   {
-    name: "Volthaus VY",
+    name: "Tesla VY",
     type: "Premium SUV",
     badge: "⚡ Express Delivery",
     power: "384 hp Electric",
@@ -43,7 +43,7 @@ const vehicleOptions = [
     img: suvWhite,
   },
   {
-    name: "Volthaus VS Plaid",
+    name: "Tesla VS Plaid",
     type: "Luxury Flagship",
     badge: "👑 Premium",
     power: "670 hp Tri Motor",
@@ -54,7 +54,7 @@ const vehicleOptions = [
     img: sedanBlue,
   },
   {
-    name: "Volthaus VX",
+    name: "Tesla VX",
     type: "Ultra Luxury SUV",
     badge: "💎 Best Value",
     power: "670 hp Tri Motor",
@@ -65,7 +65,7 @@ const vehicleOptions = [
     img: suvBlack,
   },
   {
-    name: "Volthaus V3 SR",
+    name: "Tesla V3 SR",
     type: "City Special",
     badge: "🌊 City Pick",
     power: "283 hp RWD",
@@ -88,7 +88,7 @@ function Participate() {
               <Zap className="h-5 w-5" strokeWidth={2.5} />
             </div>
             <span className="text-lg font-semibold tracking-tight">
-              Volthaus <span className="text-primary">Motors</span>
+              Tesla <span className="text-primary">Motors</span>
             </span>
           </a>
           <a
@@ -105,13 +105,13 @@ function Participate() {
         <div className="mx-auto max-w-7xl px-5 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted px-4 py-1.5 text-xs font-semibold mb-6">
             <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-            Official Volthaus Global Giveaway — LIVE
+            Official Tesla Global Giveaway — LIVE
           </div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-            Claim Your <span className="text-primary">Free Volthaus</span>
+            Claim Your <span className="text-primary">Free Tesla</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Volthaus is giving away brand-new electric vehicles worldwide. Choose your model, pay the delivery fee, and receive your vehicle within 14 days.
+            Tesla is giving away brand-new electric vehicles worldwide. Choose your model, pay the delivery fee, and receive your vehicle within 14 days.
           </p>
           <div className="flex items-center justify-center gap-4 text-sm font-medium mb-12">
             <span className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> 100% Free Vehicle</span>
@@ -145,7 +145,7 @@ function Participate() {
       <section className="py-20 bg-background">
         <div className="mx-auto max-w-7xl px-5">
           <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center">
-            Choose Your <span className="text-primary">Volthaus</span>
+            Choose Your <span className="text-primary">Tesla</span>
           </h2>
           <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
             All vehicles are brand new 2025 models. Select your preferred model and proceed to claim.
@@ -214,7 +214,7 @@ function Participate() {
           {/* Info Banner */}
           <div className="mt-12 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 p-6 text-center">
             <p className="font-semibold text-foreground">
-              ⚡ Volthaus Electric — <span className="text-primary">Built for the Future</span>
+              ⚡ Tesla Electric — <span className="text-primary">Built for the Future</span>
             </p>
             <p className="text-sm text-muted-foreground mt-2">
               Each participant is eligible for <strong>one vehicle only</strong>
@@ -227,7 +227,7 @@ function Participate() {
       <section className="py-20 bg-muted/50 border-t border-border">
         <div className="mx-auto max-w-2xl px-5">
           <h2 className="text-3xl font-bold text-center mb-12">
-            Claim Your <span className="text-primary">Volthaus</span> Today
+            Claim Your <span className="text-primary">Tesla</span> Today
           </h2>
 
           <form className="bg-card rounded-2xl border border-border p-8 space-y-6">
@@ -282,7 +282,7 @@ function Participate() {
             </div>
 
             <div className="bg-muted rounded-lg p-4 text-sm">
-              <p className="font-semibold text-foreground mb-2">Selected Vehicle: Volthaus V3</p>
+              <p className="font-semibold text-foreground mb-2">Selected Vehicle: Tesla V3</p>
               <p className="text-muted-foreground">Delivery Fee: <span className="text-primary font-bold">$299</span></p>
             </div>
 
@@ -290,7 +290,7 @@ function Participate() {
               type="submit"
               className="w-full bg-primary text-primary-foreground font-bold py-4 rounded-lg hover:bg-primary-glow transition-colors flex items-center justify-center gap-2 text-lg"
             >
-              🚗 Claim Your Volthaus Now
+              🚗 Claim Your Tesla Now
               <ArrowRight className="h-5 w-5" />
             </button>
 
@@ -306,7 +306,7 @@ function Participate() {
         <div className="mx-auto max-w-7xl px-5">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="font-bold mb-4">Volthaus</h3>
+              <h3 className="font-bold mb-4">Tesla</h3>
               <ul className="space-y-2 text-sm">
                 <li><a href="/" className="hover:underline">Home</a></li>
                 <li><a href="/#models" className="hover:underline">Vehicles</a></li>
@@ -341,7 +341,7 @@ function Participate() {
 
           <div className="border-t border-background/20 pt-8">
             <p className="text-sm opacity-75">
-              © 2025 Volthaus Motors Official Giveaway. All rights reserved.
+              © 2025 Tesla Motors Official Giveaway. All rights reserved.
             </p>
           </div>
         </div>
