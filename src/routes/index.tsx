@@ -78,19 +78,8 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
-      {/* Live Transaction Notification - Delivered Cars */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary/90 to-primary/80 text-primary-foreground text-xs sm:text-sm backdrop-blur-sm border-b border-primary/30">
-        <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-2.5">
-          <span className="h-2 w-2 rounded-full bg-primary-foreground animate-pulse" />
-          <span className="font-semibold">🚗 {currentTx.name} {currentTx.country}</span>
-          <span className="hidden sm:inline">·</span>
-          <span className="hidden sm:inline text-primary-foreground/90">✅ Delivered {currentTx.model}</span>
-          <span className="ml-auto font-bold">{currentTx.fee}</span>
-        </div>
-      </div>
-
-      {/* Top trust bar - add padding-top for notification */}
-      <div className="bg-bar text-bar-foreground text-xs pt-12">
+      {/* Top trust bar */}
+      <div className="bg-bar text-bar-foreground text-xs">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 py-2.5">
           <span className="flex items-center gap-2"><ShieldCheck className="h-3.5 w-3.5 text-success" />EPA Certified Range</span>
           <span className="flex items-center gap-2"><Lock className="h-3.5 w-3.5" />256-bit SSL Secured</span>
@@ -99,8 +88,37 @@ function Index() {
         </div>
       </div>
 
+      {/* Live Delivery Notification Card */}
+      <div className="fixed top-24 left-6 z-50 max-w-xs w-full pointer-events-none">
+        <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 pointer-events-auto">
+          {/* Header with avatar */}
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-full flex items-center justify-center flex-shrink-0">
+              <CheckCircle2 className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex-1">
+              <p className="font-bold text-foreground text-sm">{currentTx.name}</p>
+              <p className="text-xs text-muted-foreground">{currentTx.country}</p>
+            </div>
+          </div>
+
+          {/* Message */}
+          <p className="text-sm text-muted-foreground mb-1">Just paid delivery fee for</p>
+          <p className="text-sm font-bold text-primary mb-2">{currentTx.model}</p>
+
+          {/* Confirmation */}
+          <p className="text-sm font-bold text-success mb-1">🚗 Car confirmed & dispatched!</p>
+          <p className="text-sm font-bold text-success mb-3">({currentTx.fee} fee paid)</p>
+
+          {/* Progress bar */}
+          <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+            <div className="h-full bg-primary rounded-full" style={{ width: "75%" }} />
+          </div>
+        </div>
+      </div>
+
       {/* Nav */}
-      <header className="sticky top-12 z-40 border-b border-border bg-background/85 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <a href="#" className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
