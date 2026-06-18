@@ -225,9 +225,10 @@ function Index() {
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <a href="#" className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Zap className="h-5 w-5" strokeWidth={2.5} />
-            </div>
+            <svg className="h-9 w-9" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h16v2H4V4zm3 4h2v10H7V8zm5 0h2v10h-2V8zm5 0h2v10h-2V8z" fill="currentColor" />
+              <path d="M8 3h8L10 8H8L8 3zm8 0l-6 5h2l6-5z" fill="currentColor" />
+            </svg>
             <span
               className="text-lg font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-display)" }}
@@ -1064,10 +1065,11 @@ function Index() {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                  <Zap className="h-4 w-4" />
-                </div>
-                <span className="font-bold">Tesla Motors</span>
+                <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h16v2H4V4zm3 4h2v10H7V8zm5 0h2v10h-2V8zm5 0h2v10h-2V8z" fill="currentColor" />
+              <path d="M8 3h8L10 8H8L8 3zm8 0l-6 5h2l6-5z" fill="currentColor" />
+            </svg>
+            <span className="font-bold">Tesla Motors</span>
               </div>
             </div>
             <div>
