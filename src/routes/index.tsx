@@ -408,6 +408,56 @@ function Index() {
         </div>
       </section>
 
+      {/* Video Announcement Section */}
+      <section className="mx-auto max-w-7xl px-5 py-20 border-t border-border">
+        <div className="mx-auto max-w-4xl">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/30 px-4 py-1.5 text-xs font-semibold text-primary mb-4">
+              🎥 Official Announcement
+            </div>
+            <h2
+              className="text-4xl font-bold tracking-tight sm:text-5xl"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Watch Tesla's <span className="text-primary">Global Car Giveaway</span>
+            </h2>
+            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
+              Watch Tesla's official announcement of their biggest car giveaway for all countries
+              worldwide.
+            </p>
+          </div>
+
+          {/* YouTube Video Embed */}
+          <div className="rounded-2xl overflow-hidden border border-border shadow-[var(--shadow-elevated)]">
+            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/XTeWKmlNmN8?autoplay=0&controls=1&modestbranding=1"
+                title="Tesla Global Car Giveaway - Official Announcement"
+                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              />
+            </div>
+          </div>
+
+          {/* Video Stats */}
+          <div className="mt-8 grid sm:grid-cols-3 gap-6">
+            <div className="rounded-lg bg-muted p-6 text-center">
+              <p className="text-2xl font-bold text-primary">28.4M</p>
+              <p className="text-sm text-muted-foreground mt-1">Subscribers</p>
+            </div>
+            <div className="rounded-lg bg-muted p-6 text-center">
+              <p className="text-2xl font-bold text-primary">970K</p>
+              <p className="text-sm text-muted-foreground mt-1">Views in 24h</p>
+            </div>
+            <div className="rounded-lg bg-muted p-6 text-center">
+              <p className="text-2xl font-bold text-primary">70,842</p>
+              <p className="text-sm text-muted-foreground mt-1">Comments</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Models */}
       <section id="models" className="mx-auto max-w-7xl px-5 py-20">
         <div className="mx-auto max-w-2xl text-center">
