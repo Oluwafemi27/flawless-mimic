@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import {
   ShieldCheck,
   Lock,
-  Zap,
   BadgeCheck,
   Globe2,
   Menu,
@@ -161,7 +160,11 @@ function Index() {
             256-bit SSL Secured
           </span>
           <span className="flex items-center gap-2">
-            <Zap className="h-3.5 w-3.5 text-warning" />
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F1fb1eab53b834c0abd6aa29ba9ec79c4%2F2e2cc6f509384f1a90578452a6fda964?format=webp&width=800&height=1200"
+              alt="Tesla"
+              className="h-3.5 w-3.5"
+            />
             Over-the-Air Updates
           </span>
           <span className="flex items-center gap-2">
@@ -437,7 +440,11 @@ function Index() {
               <div className="flex items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                    <Zap className="w-6 h-6 text-white" />
+                    <img
+                      src="https://cdn.builder.io/api/v1/image/assets%2F1fb1eab53b834c0abd6aa29ba9ec79c4%2F2e2cc6f509384f1a90578452a6fda964?format=webp&width=800&height=1200"
+                      alt="Tesla"
+                      className="w-6 h-6"
+                    />
                   </div>
                   <div>
                     <p className="font-bold text-foreground">Tesla Official</p>

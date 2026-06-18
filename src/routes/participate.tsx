@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Zap, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { useState } from "react";
 import sedanRed from "@/assets/sedan-red.jpg";
 import sedanSilver from "@/assets/sedan-silver.jpg";
