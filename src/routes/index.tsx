@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ShieldCheck,
   Lock,
@@ -6,6 +7,7 @@ import {
   BadgeCheck,
   Globe2,
   Menu,
+  X,
   Play,
   ArrowRight,
   Battery,
@@ -46,17 +48,49 @@ export const Route = createFileRoute("/")({
 });
 
 const models = [
-  { tag: "Most Popular", name: "Volthaus V3", type: "Electric Sedan", range: "358 mi range", power: "510 hp", price: "From $42,990", img: sedanSilver },
-  { tag: "Best SUV", name: "Volthaus VY", type: "Electric SUV", range: "330 mi range", power: "384 hp", price: "From $48,990", img: suvWhite },
-  { tag: "Flagship", name: "Volthaus VS Plaid", type: "Luxury Sedan", range: "405 mi range", power: "670 hp", price: "From $79,990", img: sedanBlue },
-  { tag: "Family Pick", name: "Volthaus VX", type: "Luxury SUV", range: "348 mi range", power: "670 hp", price: "From $84,990", img: suvBlack },
+  { tag: "Most Popular", name: "Tesla Model 3", type: "Electric Sedan", range: "358 mi range", power: "510 hp", price: "From $42,990", img: sedanSilver },
+  { tag: "Best SUV", name: "Tesla Model Y", type: "Electric SUV", range: "330 mi range", power: "384 hp", price: "From $48,990", img: suvWhite },
+  { tag: "Flagship", name: "Tesla Model S Plaid", type: "Luxury Sedan", range: "405 mi range", power: "670 hp", price: "From $79,990", img: sedanBlue },
+  { tag: "Family Pick", name: "Tesla Model X", type: "Luxury SUV", range: "348 mi range", power: "670 hp", price: "From $84,990", img: suvBlack },
+];
+
+const transactions = [
+  { name: "James O.", country: "🇺🇸", model: "Model 3 2024", fee: "$299" },
+  { name: "Sophie M.", country: "🇬🇧", model: "Model Y 2024", fee: "$349" },
+  { name: "Carlos R.", country: "🇲🇽", model: "Model S 2025", fee: "$399" },
+  { name: "Yuki T.", country: "🇯🇵", model: "Model X 2024", fee: "$249" },
+  { name: "Emma W.", country: "🇨🇦", model: "Model Y 2025", fee: "$329" },
 ];
 
 function Index() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentTxIndex, setCurrentTxIndex] = useState(0);
+
+  // Auto-rotate transactions
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentTx = transactions[currentTxIndex];
+
   return (
     <div className="min-h-screen bg-background font-sans text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
-      {/* Top trust bar */}
-      <div className="bg-bar text-bar-foreground text-xs">
+      {/* Live Transaction Notification */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary/90 to-primary/80 text-primary-foreground text-xs sm:text-sm backdrop-blur-sm border-b border-primary/30">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-2.5">
+          <span className="h-2 w-2 rounded-full bg-primary-foreground animate-pulse" />
+          <span className="font-semibold">🚗 {currentTx.name} {currentTx.country}</span>
+          <span className="hidden sm:inline">·</span>
+          <span className="hidden sm:inline text-primary-foreground/90">Claimed {currentTx.model}</span>
+          <span className="ml-auto font-bold">{currentTx.fee}</span>
+        </div>
+      </div>
+
+      {/* Top trust bar - add padding-top for notification */}
+      <div className="bg-bar text-bar-foreground text-xs pt-12">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 py-2.5">
           <span className="flex items-center gap-2"><ShieldCheck className="h-3.5 w-3.5 text-success" />EPA Certified Range</span>
           <span className="flex items-center gap-2"><Lock className="h-3.5 w-3.5" />256-bit SSL Secured</span>
@@ -66,14 +100,14 @@ function Index() {
       </div>
 
       {/* Nav */}
-      <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+      <header className="sticky top-12 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <a href="#" className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <Zap className="h-5 w-5" strokeWidth={2.5} />
             </div>
             <span className="text-lg font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-              Volthaus <span className="text-primary">Motors</span>
+              Tesla <span className="text-primary">Motors</span>
             </span>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
@@ -89,11 +123,58 @@ function Index() {
             >
               Claim Now
             </a>
-            <button className="rounded-md border border-border p-2 text-foreground md:hidden" aria-label="Menu">
-              <Menu className="h-5 w-5" />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="rounded-md border border-border p-2 text-foreground md:hidden"
+              aria-label="Menu"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="border-t border-border bg-background md:hidden">
+            <nav className="flex flex-col gap-1 p-4">
+              <a
+                href="#models"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md px-4 py-3 text-sm font-medium hover:bg-muted"
+              >
+                Vehicles
+              </a>
+              <a
+                href="#instructions"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md px-4 py-3 text-sm font-medium hover:bg-muted"
+              >
+                How It Works
+              </a>
+              <a
+                href="#participate"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md px-4 py-3 text-sm font-medium hover:bg-muted"
+              >
+                Claim Free Car
+              </a>
+              <a
+                href="#deliveries"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md px-4 py-3 text-sm font-medium hover:bg-muted"
+              >
+                Live Deliveries
+              </a>
+              <a
+                href="/participate"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-glow mt-2"
+              >
+                Claim Now
+              </a>
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Hero - Giveaway */}
@@ -112,10 +193,10 @@ function Index() {
               className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Win a Brand New <span className="text-primary">Volthaus</span> Electric Car
+              Win a Brand New <span className="text-primary">Tesla</span> Electric Car
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Volthaus is giving away brand-new electric vehicles worldwide. Claim your car today! No hidden fees—just register, select your model, pay the small delivery fee, and receive your vehicle.
+              Tesla is giving away brand-new electric vehicles worldwide. Claim your car today! No hidden fees—just register, select your model, pay the small delivery fee, and receive your vehicle.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -147,7 +228,7 @@ function Index() {
               <div className="overflow-hidden rounded-2xl bg-background">
                 <img
                   src={sedanRed}
-                  alt="Volthaus V3 electric sedan in red"
+                  alt="Tesla Model 3 electric sedan in red"
                   width={1280}
                   height={960}
                   className="h-auto w-full"
@@ -155,7 +236,7 @@ function Index() {
               </div>
               <div className="px-3 pb-3 pt-5 text-center">
                 <h3 className="text-xl font-semibold text-primary" style={{ fontFamily: "var(--font-display)" }}>
-                  Volthaus V3 Performance
+                  Tesla Model 3 Performance
                 </h3>
                 <p className="mt-1 text-sm text-muted-foreground">0–60 mph in 2.9s · 358 mi range</p>
               </div>
@@ -172,7 +253,7 @@ function Index() {
             className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Available <span className="text-primary">Volthaus</span> Cars
+            Available <span className="text-primary">Tesla</span> Cars
           </h2>
           <p className="mt-4 text-muted-foreground">
             Brand new 2024–2025 models available now. All are completely free—you only pay a one-time delivery fee.
@@ -227,7 +308,7 @@ function Index() {
             className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            How to Claim Your <span className="text-primary">Volthaus</span> Car
+            How to Claim Your <span className="text-primary">Tesla</span> Car
           </h2>
           <p className="mt-4 text-muted-foreground">
             Follow these simple steps to claim your free electric vehicle.
@@ -236,10 +317,10 @@ function Index() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { step: "01", title: "Register Your Details", desc: "Enter your name, delivery address, and contact information so Volthaus can ship your vehicle directly." },
-            { step: "02", title: "Choose Your Volthaus Car", desc: "Select from V3, VY, VS Plaid, or VX—all brand new 2025 models." },
+            { step: "01", title: "Register Your Details", desc: "Enter your name, delivery address, and contact information so Tesla can ship your vehicle directly." },
+            { step: "02", title: "Choose Your Tesla Car", desc: "Select from Model 3, Model Y, Model S Plaid, or Model X—all brand new 2025 models." },
             { step: "03", title: "Pay Delivery Fee", desc: "Pay the one-time delivery fee ($199–$399) for shipping and logistics. This is the only fee required." },
-            { step: "04", title: "Receive Your Volthaus Car", desc: "Your vehicle will be delivered within 7–14 business days, fully charged and ready to drive." },
+            { step: "04", title: "Receive Your Tesla Car", desc: "Your vehicle will be delivered within 7–14 business days, fully charged and ready to drive." },
           ].map((item) => (
             <div key={item.step} className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg">
@@ -256,7 +337,7 @@ function Index() {
             href="/participate"
             className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-elevated)] hover:bg-primary-glow"
           >
-            🚗 Start Claiming Your Volthaus Now <ArrowRight className="h-4 w-4" />
+            🚗 Start Claiming Your Tesla Now <ArrowRight className="h-4 w-4" />
           </a>
         </div>
       </section>
@@ -265,16 +346,16 @@ function Index() {
       <section id="participate" className="mx-auto max-w-7xl px-5 py-20">
         <div className="mx-auto max-w-2xl text-center mb-8">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/30 px-4 py-1.5 text-xs font-semibold text-primary mb-4">
-            Official Volthaus Global Giveaway
+            Official Tesla Global Giveaway
           </div>
           <h2
             className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Choose Your <span className="text-primary">Volthaus</span> Electric Car
+            Choose Your <span className="text-primary">Tesla</span> Electric Car
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Volthaus is gifting brand new electric vehicles worldwide. All vehicles are 100% free—just pay the one-time delivery fee.
+            Tesla is gifting brand new electric vehicles worldwide. All vehicles are 100% free—just pay the one-time delivery fee.
           </p>
         </div>
 
