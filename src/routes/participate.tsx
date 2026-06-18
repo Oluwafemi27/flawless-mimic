@@ -79,14 +79,47 @@ const vehicleOptions = [
   },
 ];
 
+const deliveryOptions = [
+  {
+    name: "Standard Delivery",
+    price: "$299",
+    description: "Standard international shipping & customs clearance",
+    days: "10–14 business days",
+  },
+  {
+    name: "Express Delivery",
+    price: "$349",
+    description: "Priority shipping with real-time tracking updates",
+    days: "5–7 business days",
+  },
+  {
+    name: "Premium Delivery",
+    price: "$399",
+    description: "Fastest dispatch, white-glove doorstep delivery",
+    days: "3–5 business days",
+  },
+];
+
 function Participate() {
   const [selectedVehicle, setSelectedVehicle] = useState(vehicleOptions[0]);
+  const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]);
+  const [paymentMethod, setPaymentMethod] = useState<"credit-card" | "apple-gift">("credit-card");
+  const [step, setStep] = useState<"form" | "delivery" | "payment">("form");
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     address: "",
-    phone: "",
+    street: "",
+    city: "",
+    zipCode: "",
     country: "",
+    phone: "",
+    cardName: "",
+    cardNumber: "",
+    cardExpiry: "",
+    cardCvv: "",
+    giftCardCode: "",
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -100,8 +133,28 @@ function Participate() {
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
-      setFormData({ fullName: "", email: "", address: "", phone: "", country: "" });
+      setFormData({
+        fullName: "",
+        email: "",
+        address: "",
+        street: "",
+        city: "",
+        zipCode: "",
+        country: "",
+        phone: "",
+        cardName: "",
+        cardNumber: "",
+        cardExpiry: "",
+        cardCvv: "",
+        giftCardCode: "",
+      });
+      setStep("form");
     }, 3000);
+  };
+
+  const getTotalPrice = () => {
+    const deliveryPrice = parseInt(selectedDelivery.price.replace("$", ""));
+    return `$${deliveryPrice}`;
   };
 
   return (
@@ -279,93 +332,296 @@ function Participate() {
           {submitted ? (
             <div className="bg-card rounded-2xl border border-success/50 bg-success/10 p-8 text-center">
               <div className="text-4xl mb-4">✅</div>
-              <h3 className="text-xl font-bold text-foreground mb-2">Claim Submitted!</h3>
+              <h3 className="text-xl font-bold text-foreground mb-2">Order Confirmed!</h3>
               <p className="text-muted-foreground">
-                Thank you! We've received your claim for the {selectedVehicle.name}. You'll receive a confirmation email shortly.
+                Thank you! Your order for the {selectedVehicle.name} has been placed. You'll receive a confirmation email with tracking details shortly.
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-card rounded-2xl border border-border p-8 space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Full Name</label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    placeholder="John Doe"
-                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Email Address</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder="john@example.com"
-                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </div>
-              </div>
+            <form onSubmit={handleSubmit} className="bg-card rounded-2xl border border-border p-8 space-y-8">
+              {/* Step 1: Personal & Delivery Info */}
+              {step === "form" && (
+                <>
+                  <div>
+                    <h3 className="text-lg font-bold mb-4">Personal Information</h3>
+                    <div className="grid md:grid-cols-2 gap-4 space-y-0">
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">Full Name</label>
+                        <input
+                          type="text"
+                          name="fullName"
+                          value={formData.fullName}
+                          onChange={handleInputChange}
+                          placeholder="John Doe"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">Email Address</label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          placeholder="john@example.com"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">Phone Number</label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          placeholder="+1 (555) 000-0000"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-              <div>
-                <label className="block text-sm font-semibold mb-2">Delivery Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  placeholder="123 Main Street, City, Country"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
+                  <div>
+                    <h3 className="text-lg font-bold mb-4">Delivery Address</h3>
+                    <div className="space-y-4">
+                      <input
+                        type="text"
+                        name="street"
+                        value={formData.street}
+                        onChange={handleInputChange}
+                        placeholder="Street Address"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <input
+                          type="text"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleInputChange}
+                          placeholder="City"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                        <input
+                          type="text"
+                          name="zipCode"
+                          value={formData.zipCode}
+                          onChange={handleInputChange}
+                          placeholder="ZIP / Postal Code"
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                      <select name="country" value={formData.country} onChange={handleInputChange} required className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary">
+                        <option value="">Select Country</option>
+                        <option>United States</option>
+                        <option>Canada</option>
+                        <option>United Kingdom</option>
+                        <option>Australia</option>
+                        <option>Nigeria</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                  </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Phone Number</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder="+1 (555) 000-0000"
-                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Country</label>
-                  <select name="country" value={formData.country} onChange={handleInputChange} className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary">
-                    <option>Select Country</option>
-                    <option>United States</option>
-                    <option>Canada</option>
-                    <option>United Kingdom</option>
-                    <option>Australia</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-              </div>
+                  <button
+                    type="button"
+                    onClick={() => setStep("delivery")}
+                    className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-lg hover:bg-primary-glow transition-colors"
+                  >
+                    Continue to Delivery Options
+                  </button>
+                </>
+              )}
 
-              <div className="bg-muted rounded-lg p-4 text-sm">
-                <p className="font-semibold text-foreground mb-2">Selected Vehicle: {selectedVehicle.name}</p>
-                <p className="text-muted-foreground">
-                  Delivery Fee: <span className="text-primary font-bold">{selectedVehicle.fee}</span>
-                </p>
-              </div>
+              {/* Step 2: Delivery Options */}
+              {step === "delivery" && (
+                <>
+                  <div>
+                    <h3 className="text-lg font-bold mb-4">Select Delivery Option</h3>
+                    <div className="space-y-3">
+                      {deliveryOptions.map((option) => (
+                        <button
+                          key={option.name}
+                          type="button"
+                          onClick={() => setSelectedDelivery(option)}
+                          className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                            selectedDelivery.name === option.name
+                              ? "border-primary bg-primary/10"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className="font-bold text-foreground">{option.name}</h4>
+                              <p className="text-sm text-muted-foreground mt-1">{option.description}</p>
+                              <p className="text-xs text-muted-foreground mt-2">📦 {option.days}</p>
+                            </div>
+                            <span className="text-lg font-bold text-primary">{option.price}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-              <button
-                type="submit"
-                className="w-full bg-primary text-primary-foreground font-bold py-4 rounded-lg hover:bg-primary-glow transition-colors flex items-center justify-center gap-2 text-lg"
-              >
-                🚗 Claim Your Tesla Now
-                <ArrowRight className="h-5 w-5" />
-              </button>
+                  <div className="bg-muted rounded-lg p-4">
+                    <p className="text-sm text-muted-foreground">Delivery Fee:</p>
+                    <p className="text-3xl font-bold text-foreground">{getTotalPrice()}</p>
+                    <p className="text-xs text-muted-foreground mt-2">🚗 Car Value: <span className="text-success font-bold">FREE</span></p>
+                  </div>
 
-              <p className="text-xs text-muted-foreground text-center">
-                By clicking "Claim", you agree to our Terms of Service and Privacy Policy. No spam,
-                just your vehicle delivery updates.
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setStep("form")}
+                      className="flex-1 bg-muted text-foreground font-bold py-3 rounded-lg hover:bg-muted/80 transition-colors"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStep("payment")}
+                      className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-lg hover:bg-primary-glow transition-colors"
+                    >
+                      Continue to Payment
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* Step 3: Payment */}
+              {step === "payment" && (
+                <>
+                  <div>
+                    <h3 className="text-lg font-bold mb-4">Select Payment Method</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("credit-card")}
+                        className={`p-6 rounded-xl border-2 transition-all flex flex-col items-center gap-3 ${
+                          paymentMethod === "credit-card"
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="text-3xl">💳</span>
+                        <span className="font-bold">Credit Card</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("apple-gift")}
+                        className={`p-6 rounded-xl border-2 transition-all flex flex-col items-center gap-3 ${
+                          paymentMethod === "apple-gift"
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="text-3xl">🍎</span>
+                        <span className="font-bold">Apple Gift Card</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Credit Card Form */}
+                  {paymentMethod === "credit-card" && (
+                    <div className="space-y-4 border-t border-border pt-6">
+                      <h4 className="font-bold flex items-center gap-2">
+                        <span>💳</span> Credit Card Payment
+                      </h4>
+                      <input
+                        type="text"
+                        name="cardName"
+                        value={formData.cardName}
+                        onChange={handleInputChange}
+                        placeholder="Card Holder Name"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <input
+                        type="text"
+                        name="cardNumber"
+                        value={formData.cardNumber}
+                        onChange={handleInputChange}
+                        placeholder="Card Number"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <div className="grid grid-cols-2 gap-4">
+                        <input
+                          type="text"
+                          name="cardExpiry"
+                          value={formData.cardExpiry}
+                          onChange={handleInputChange}
+                          placeholder="MM/YY"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                        <input
+                          type="text"
+                          name="cardCvv"
+                          value={formData.cardCvv}
+                          onChange={handleInputChange}
+                          placeholder="CVV"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                      <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                        <p className="text-warning font-bold flex items-center justify-center gap-2 mb-2">
+                          <span>📤</span> Upload Payment Proof
+                        </p>
+                        <p className="text-sm text-muted-foreground">Tap to upload proof</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Apple Gift Card Form */}
+                  {paymentMethod === "apple-gift" && (
+                    <div className="space-y-4 border-t border-border pt-6">
+                      <h4 className="font-bold flex items-center gap-2">
+                        <span>🎁</span> Apple Gift Card
+                      </h4>
+                      <input
+                        type="text"
+                        name="giftCardCode"
+                        value={formData.giftCardCode}
+                        onChange={handleInputChange}
+                        placeholder="Gift Card Code: XXXX-XXXX-XXXX"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                        <p className="text-warning font-bold flex items-center justify-center gap-2 mb-2">
+                          <span>📤</span> Upload Payment Proof
+                        </p>
+                        <p className="text-sm text-muted-foreground">Tap to upload proof</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setStep("delivery")}
+                      className="flex-1 bg-muted text-foreground font-bold py-3 rounded-lg hover:bg-muted/80 transition-colors"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-lg hover:bg-primary-glow transition-colors flex items-center justify-center gap-2"
+                    >
+                      ✅ Confirm & Pay
+                    </button>
+                  </div>
+                </>
+              )}
+
+              <p className="text-xs text-muted-foreground text-center border-t border-border pt-6">
+                By proceeding, you agree to our Terms of Service and Privacy Policy.
               </p>
             </form>
           )}
