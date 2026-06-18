@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ShieldCheck,
   Lock,
@@ -6,6 +7,7 @@ import {
   BadgeCheck,
   Globe2,
   Menu,
+  X,
   Play,
   ArrowRight,
   Battery,
@@ -13,6 +15,12 @@ import {
   Sparkles,
   Wallet,
   Cpu,
+  CheckCircle2,
+  Users,
+  MessageCircle,
+  Facebook,
+  Twitter,
+  Instagram,
 } from "lucide-react";
 import sedanRed from "@/assets/sedan-red.jpg";
 import sedanSilver from "@/assets/sedan-silver.jpg";
@@ -40,17 +48,49 @@ export const Route = createFileRoute("/")({
 });
 
 const models = [
-  { tag: "Most Popular", name: "Volthaus V3", type: "Electric Sedan", range: "358 mi range", power: "510 hp", price: "From $42,990", img: sedanSilver },
-  { tag: "Best SUV", name: "Volthaus VY", type: "Electric SUV", range: "330 mi range", power: "384 hp", price: "From $48,990", img: suvWhite },
-  { tag: "Flagship", name: "Volthaus VS Plaid", type: "Luxury Sedan", range: "405 mi range", power: "670 hp", price: "From $79,990", img: sedanBlue },
-  { tag: "Family Pick", name: "Volthaus VX", type: "Luxury SUV", range: "348 mi range", power: "670 hp", price: "From $84,990", img: suvBlack },
+  { tag: "Most Popular", name: "Tesla Model 3", type: "Electric Sedan", range: "358 mi range", power: "510 hp", price: "From $42,990", img: sedanSilver },
+  { tag: "Best SUV", name: "Tesla Model Y", type: "Electric SUV", range: "330 mi range", power: "384 hp", price: "From $48,990", img: suvWhite },
+  { tag: "Flagship", name: "Tesla Model S Plaid", type: "Luxury Sedan", range: "405 mi range", power: "670 hp", price: "From $79,990", img: sedanBlue },
+  { tag: "Family Pick", name: "Tesla Model X", type: "Luxury SUV", range: "348 mi range", power: "670 hp", price: "From $84,990", img: suvBlack },
+];
+
+const transactions = [
+  { name: "James O.", country: "🇺🇸", model: "Model 3 2024", fee: "$299" },
+  { name: "Sophie M.", country: "🇬🇧", model: "Model Y 2024", fee: "$349" },
+  { name: "Carlos R.", country: "🇲🇽", model: "Model S 2025", fee: "$399" },
+  { name: "Yuki T.", country: "🇯🇵", model: "Model X 2024", fee: "$249" },
+  { name: "Emma W.", country: "🇨🇦", model: "Model Y 2025", fee: "$329" },
 ];
 
 function Index() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentTxIndex, setCurrentTxIndex] = useState(0);
+
+  // Auto-rotate transactions
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentTx = transactions[currentTxIndex];
+
   return (
     <div className="min-h-screen bg-background font-sans text-foreground" style={{ fontFamily: "var(--font-sans)" }}>
-      {/* Top trust bar */}
-      <div className="bg-bar text-bar-foreground text-xs">
+      {/* Live Transaction Notification */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary/90 to-primary/80 text-primary-foreground text-xs sm:text-sm backdrop-blur-sm border-b border-primary/30">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-2.5">
+          <span className="h-2 w-2 rounded-full bg-primary-foreground animate-pulse" />
+          <span className="font-semibold">🚗 {currentTx.name} {currentTx.country}</span>
+          <span className="hidden sm:inline">·</span>
+          <span className="hidden sm:inline text-primary-foreground/90">Claimed {currentTx.model}</span>
+          <span className="ml-auto font-bold">{currentTx.fee}</span>
+        </div>
+      </div>
+
+      {/* Top trust bar - add padding-top for notification */}
+      <div className="bg-bar text-bar-foreground text-xs pt-12">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-4 py-2.5">
           <span className="flex items-center gap-2"><ShieldCheck className="h-3.5 w-3.5 text-success" />EPA Certified Range</span>
           <span className="flex items-center gap-2"><Lock className="h-3.5 w-3.5" />256-bit SSL Secured</span>
@@ -60,67 +100,113 @@ function Index() {
       </div>
 
       {/* Nav */}
-      <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+      <header className="sticky top-12 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <a href="#" className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <Zap className="h-5 w-5" strokeWidth={2.5} />
             </div>
             <span className="text-lg font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-              Volthaus <span className="text-primary">Motors</span>
+              Tesla <span className="text-primary">Motors</span>
             </span>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
             <a href="#models" className="hover:text-foreground">Vehicles</a>
-            <a href="#tech" className="hover:text-foreground">Technology</a>
-            <a href="#charging" className="hover:text-foreground">Charging</a>
-            <a href="#story" className="hover:text-foreground">Our Story</a>
+            <a href="#instructions" className="hover:text-foreground">How It Works</a>
+            <a href="#participate" className="hover:text-foreground">Claim Free Car</a>
+            <a href="#deliveries" className="hover:text-foreground">Live Deliveries</a>
           </nav>
           <div className="flex items-center gap-2">
             <a
-              href="#models"
+              href="/participate"
               className="hidden rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-card)] transition hover:bg-primary-glow sm:inline-flex"
             >
-              Configure
+              Claim Now
             </a>
-            <button className="rounded-md border border-border p-2 text-foreground md:hidden" aria-label="Menu">
-              <Menu className="h-5 w-5" />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="rounded-md border border-border p-2 text-foreground md:hidden"
+              aria-label="Menu"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="border-t border-border bg-background md:hidden">
+            <nav className="flex flex-col gap-1 p-4">
+              <a
+                href="#models"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md px-4 py-3 text-sm font-medium hover:bg-muted"
+              >
+                Vehicles
+              </a>
+              <a
+                href="#instructions"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md px-4 py-3 text-sm font-medium hover:bg-muted"
+              >
+                How It Works
+              </a>
+              <a
+                href="#participate"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md px-4 py-3 text-sm font-medium hover:bg-muted"
+              >
+                Claim Free Car
+              </a>
+              <a
+                href="#deliveries"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md px-4 py-3 text-sm font-medium hover:bg-muted"
+              >
+                Live Deliveries
+              </a>
+              <a
+                href="/participate"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-glow mt-2"
+              >
+                Claim Now
+              </a>
+            </nav>
+          </div>
+        )}
       </header>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
+      {/* Hero - Giveaway */}
+      <section id="giveaway" className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-2 lg:py-24">
           <div>
             <div className="flex flex-wrap items-center gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" /> 2025 Lineup
+                ✅ Official Event
               </span>
               <span className="inline-flex items-center gap-2 rounded-full border border-success/30 bg-success/10 px-3 py-1 text-xs font-semibold text-success">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" /> Now Reserving — 18 Markets
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" /> LIVE — 12,849 joined
               </span>
             </div>
             <h1
               className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Electric Performance, <span className="text-primary">Reimagined</span> from the Ground Up.
+              Win a Brand New <span className="text-primary">Tesla</span> Electric Car
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Volthaus builds long-range electric vehicles around three ideas: silent power, a software-first
-              cabin, and a global supercharging network you'll never have to think about.
+              Tesla is giving away brand-new electric vehicles worldwide. Claim your car today! No hidden fees—just register, select your model, pay the small delivery fee, and receive your vehicle.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href="#models"
+                href="/participate"
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-elevated)] transition hover:bg-primary-glow"
               >
-                Configure Your V3 <ArrowRight className="h-4 w-4" />
+                🚗 Claim Your Free Car <ArrowRight className="h-4 w-4" />
               </a>
               <a
-                href="#models"
+                href="#participate"
                 className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-6 py-3.5 text-sm font-semibold text-foreground hover:bg-muted"
               >
                 View All Models
@@ -142,7 +228,7 @@ function Index() {
               <div className="overflow-hidden rounded-2xl bg-background">
                 <img
                   src={sedanRed}
-                  alt="Volthaus V3 electric sedan in red"
+                  alt="Tesla Model 3 electric sedan in red"
                   width={1280}
                   height={960}
                   className="h-auto w-full"
@@ -150,7 +236,7 @@ function Index() {
               </div>
               <div className="px-3 pb-3 pt-5 text-center">
                 <h3 className="text-xl font-semibold text-primary" style={{ fontFamily: "var(--font-display)" }}>
-                  Volthaus V3 Performance
+                  Tesla Model 3 Performance
                 </h3>
                 <p className="mt-1 text-sm text-muted-foreground">0–60 mph in 2.9s · 358 mi range</p>
               </div>
@@ -162,16 +248,15 @@ function Index() {
       {/* Models */}
       <section id="models" className="mx-auto max-w-7xl px-5 py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">The Lineup</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Available Models</p>
           <h2
             className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Available Volthaus Vehicles
+            Available <span className="text-primary">Tesla</span> Cars
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Four vehicles, one architecture. All 2024–2025 models, delivered to your door with
-            white-glove handover.
+            Brand new 2024–2025 models available now. All are completely free—you only pay a one-time delivery fee.
           </p>
         </div>
 
@@ -214,152 +299,338 @@ function Index() {
         </div>
       </section>
 
-      {/* Tech / Why */}
-      <section id="tech" className="bg-muted/40 py-20">
-        <div className="mx-auto max-w-7xl px-5">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Engineered in-house</p>
-            <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl" style={{ fontFamily: "var(--font-display)" }}>
-              Built around the battery, not bolted on.
-            </h2>
+
+      {/* Instructions */}
+      <section id="instructions" className="mx-auto max-w-7xl px-5 py-20 bg-muted/30">
+        <div className="mx-auto max-w-2xl text-center mb-12">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">How It Works</p>
+          <h2
+            className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            How to Claim Your <span className="text-primary">Tesla</span> Car
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Follow these simple steps to claim your free electric vehicle.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { step: "01", title: "Register Your Details", desc: "Enter your name, delivery address, and contact information so Tesla can ship your vehicle directly." },
+            { step: "02", title: "Choose Your Tesla Car", desc: "Select from Model 3, Model Y, Model S Plaid, or Model X—all brand new 2025 models." },
+            { step: "03", title: "Pay Delivery Fee", desc: "Pay the one-time delivery fee ($199–$399) for shipping and logistics. This is the only fee required." },
+            { step: "04", title: "Receive Your Tesla Car", desc: "Your vehicle will be delivered within 7–14 business days, fully charged and ready to drive." },
+          ].map((item) => (
+            <div key={item.step} className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg">
+                {item.step}
+              </div>
+              <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <a
+            href="/participate"
+            className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-elevated)] hover:bg-primary-glow"
+          >
+            🚗 Start Claiming Your Tesla Now <ArrowRight className="h-4 w-4" />
+          </a>
+        </div>
+      </section>
+
+      {/* Participate Section - Car Selection */}
+      <section id="participate" className="mx-auto max-w-7xl px-5 py-20">
+        <div className="mx-auto max-w-2xl text-center mb-8">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/30 px-4 py-1.5 text-xs font-semibold text-primary mb-4">
+            Official Tesla Global Giveaway
           </div>
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <h2
+            className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Choose Your <span className="text-primary">Tesla</span> Electric Car
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Tesla is gifting brand new electric vehicles worldwide. All vehicles are 100% free—just pay the one-time delivery fee.
+          </p>
+        </div>
+
+        <div className="mb-8 grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto text-center">
+          <div className="rounded-lg bg-muted p-6">
+            <p className="text-xs font-semibold text-muted-foreground uppercase">Event Ends In</p>
+            <p className="text-3xl font-bold tracking-tight mt-2 font-mono">11 HRS : 42 MIN : 33 SEC</p>
+          </div>
+          <div className="rounded-lg bg-muted p-6">
+            <p className="text-xs font-semibold text-muted-foreground uppercase">Participants</p>
+            <p className="text-3xl font-bold tracking-tight mt-2"><span className="text-primary">12,847</span> joined</p>
+          </div>
+        </div>
+
+        <div className="text-center mb-8">
+          <p className="text-muted-foreground">✨ Each participant is eligible for <strong>one vehicle only</strong></p>
+        </div>
+      </section>
+
+      {/* Live Deliveries Feed */}
+      <section id="deliveries" className="mx-auto max-w-7xl px-5 py-20 bg-muted/30">
+        <div className="mx-auto max-w-2xl text-center mb-12">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Real-Time Updates</p>
+          <h2
+            className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Live <span className="text-primary">Deliveries</span>
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Real-time delivery updates from Volthaus owners around the world.
+          </p>
+        </div>
+
+        <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card overflow-hidden shadow-[var(--shadow-card)]">
+          <div className="bg-foreground text-background p-4 flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+            <span className="font-semibold">Live Delivery Feed</span>
+          </div>
+          <div className="divide-y divide-border">
             {[
-              { icon: Battery, title: "405 mi Range", body: "Structural pack with cell-to-body integration cuts weight and adds rigidity." },
-              { icon: Gauge, title: "2.9s 0–60", body: "Tri-motor drivetrain delivers track-grade torque with cabin-grade quiet." },
-              { icon: Cpu, title: "Volt OS", body: "A vehicle that updates like your phone. New features arrive overnight." },
-              { icon: Sparkles, title: "White Glove", body: "Delivery, walkthrough, and home-charger install handled by our team." },
-            ].map((f) => (
-              <div key={f.title} className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
-                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <f.icon className="h-5 w-5" />
+              { name: "James O.", country: "🇺🇸", model: "V3 2024", status: "Delivery confirmed ✓", fee: "$299", time: "5 min ago" },
+              { name: "Sophie M.", country: "🇬🇧", model: "VY 2024", status: "Car dispatched 🚚", fee: "$349", time: "44 min ago" },
+              { name: "Carlos R.", country: "🇲🇽", model: "VS 2025", status: "Payment verified ✓", fee: "$399", time: "24 min ago" },
+              { name: "Yuki T.", country: "🇯🇵", model: "VX 2024", status: "Shipment confirmed ✓", fee: "$249", time: "56 min ago" },
+              { name: "Emma W.", country: "🇨🇦", model: "VY 2025", status: "Vehicle en route 🚗", fee: "$329", time: "12 min ago" },
+              { name: "Lucas B.", country: "🇧🇷", model: "VY 2025", status: "Delivery confirmed ✓", fee: "$289", time: "1 min ago" },
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-4 p-4 hover:bg-muted/50 transition">
+                <CheckCircle2 className="h-5 w-5 text-success flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm">
+                    {item.name} {item.country}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Volthaus {item.model} · {item.status}
+                  </p>
                 </div>
-                <h3 className="mt-5 text-lg font-semibold" style={{ fontFamily: "var(--font-display)" }}>
-                  {f.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+                <div className="text-right flex-shrink-0">
+                  <p className="font-semibold text-primary text-sm">{item.fee}</p>
+                  <p className="text-xs text-muted-foreground">{item.time}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Video / Announcement */}
+      {/* CEO Announcements */}
       <section className="mx-auto max-w-7xl px-5 py-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Keynote</p>
-          <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl" style={{ fontFamily: "var(--font-display)" }}>
-            Volthaus 2025 — The Architecture Reveal
+        <div className="mx-auto max-w-2xl text-center mb-12">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Official Statement</p>
+          <h2
+            className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Straight from the <span className="text-primary">Leadership</span>
           </h2>
-          <p className="mt-4 text-muted-foreground">
-            Watch our chief engineer walk through the new platform, the cell chemistry, and the
-            software stack that ties it together.
-          </p>
         </div>
-        <div className="mt-10 overflow-hidden rounded-3xl border border-border shadow-[var(--shadow-elevated)]">
-          <div className="relative aspect-video bg-bar">
-            <img
-              src={sedanRed}
-              alt="Keynote preview"
-              loading="lazy"
-              width={1280}
-              height={720}
-              className="h-full w-full object-cover opacity-60"
-            />
-            <button
-              aria-label="Play keynote"
-              className="absolute inset-0 m-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-elevated)] transition hover:scale-105"
-            >
-              <Play className="ml-1 h-8 w-8" fill="currentColor" />
-            </button>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-lg">
+                V
+              </div>
+              <div>
+                <p className="font-semibold">Volthaus Leadership</p>
+                <p className="text-xs text-muted-foreground">@Volthaus · Official</p>
+              </div>
+              <CheckCircle2 className="h-4 w-4 text-primary ml-auto flex-shrink-0" />
+            </div>
+            <p className="text-muted-foreground mb-4">
+              Our mission is to accelerate the world's transition to sustainable energy. The global Volthaus giveaway is completely free—just cover the delivery cost. This is our commitment to making electric vehicles accessible worldwide.
+            </p>
+            <div className="flex gap-6 text-sm text-muted-foreground">
+              <span>❤️ <strong>128K</strong></span>
+              <span>🔁 <strong>47K</strong></span>
+              <span>💬 <strong>8.2K</strong></span>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
+                ⚡
+              </div>
+              <div>
+                <p className="font-semibold">Volthaus Official</p>
+                <p className="text-xs text-muted-foreground">@Volthaus · Verified</p>
+              </div>
+              <CheckCircle2 className="h-4 w-4 text-primary ml-auto flex-shrink-0" />
+            </div>
+            <p className="text-muted-foreground mb-4">
+              🚗 Our global Volthaus car giveaway is NOW LIVE! Open to ALL countries. No purchase necessary—just cover the one-time delivery fee. Models available: V3, VY, VS Plaid, VX, and more. Claim yours today!
+            </p>
+            <div className="flex gap-6 text-sm text-muted-foreground">
+              <span>❤️ <strong>215K</strong></span>
+              <span>🔁 <strong>89K</strong></span>
+              <span>💬 <strong>14K</strong></span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Charging */}
-      <section id="charging" className="bg-bar text-bar-foreground">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-2">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-glow">Volthaus Network</p>
-            <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl" style={{ fontFamily: "var(--font-display)" }}>
-              50,000 chargers. One account.
-            </h2>
-            <p className="mt-5 max-w-xl text-bar-foreground/70">
-              Plug in, walk away. Your car authenticates, your session bills automatically, and
-              your trip plans around live stall availability.
+      {/* Testimonials */}
+      <section className="mx-auto max-w-7xl px-5 py-20 bg-muted/30">
+        <div className="mx-auto max-w-2xl text-center mb-12">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Real Winners</p>
+          <h2
+            className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            What <span className="text-primary">Winners</span> Are Saying
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Real testimonials from verified Volthaus car recipients.
+          </p>
+        </div>
+
+        <div className="mx-auto max-w-2xl">
+          <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
+                M
+              </div>
+              <div>
+                <p className="font-semibold">Michael R.</p>
+                <p className="text-sm text-muted-foreground">🇺🇸 USA</p>
+              </div>
+            </div>
+            <p className="text-muted-foreground mb-6 leading-relaxed">
+              "I received my Volthaus V3 2024 after paying the delivery fee. It arrived in 9 days, fully charged and ready. Best decision ever!"
             </p>
-            <div className="mt-8 grid grid-cols-3 gap-4">
-              {[
-                { k: "50k+", v: "Fast chargers" },
-                { k: "42", v: "Countries" },
-                { k: "15 min", v: "10 → 80%" },
-              ].map((s) => (
-                <div key={s.v} className="rounded-xl border border-bar-foreground/10 p-4">
-                  <div className="text-2xl font-bold text-primary-glow" style={{ fontFamily: "var(--font-display)" }}>
-                    {s.k}
-                  </div>
-                  <div className="mt-1 text-xs text-bar-foreground/60">{s.v}</div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-success/10 text-success px-4 py-2 text-sm font-semibold border border-success/30">
+              ✅ Received: Volthaus V3 2024 🚗
+            </div>
+          </div>
+
+          <div className="flex justify-center gap-2 mt-8">
+            {[...Array(5)].map((_, i) => (
+              <button key={i} className={`h-2 rounded-full transition ${i === 0 ? 'w-8 bg-primary' : 'w-2 bg-border'}`} aria-label={`Slide ${i + 1}`} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Social Links */}
+      <section className="mx-auto max-w-7xl px-5 py-20">
+        <div className="mx-auto max-w-2xl text-center mb-12">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Connect</p>
+          <h2
+            className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Follow <span className="text-primary">Volthaus</span> Official
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Verified official social media accounts of Volthaus worldwide.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {[
+            { name: "Twitter/X", handle: "@Volthaus", desc: "Official Volthaus X account.", followers: "28.4M followers", icon: Twitter, link: "https://twitter.com" },
+            { name: "Facebook", handle: "Volthaus", desc: "Official Volthaus Facebook page.", followers: "14.2M likes", icon: Facebook, link: "https://facebook.com" },
+            { name: "Instagram", handle: "@VolthausMotors", desc: "Official Volthaus Instagram.", followers: "12.8M followers", icon: Instagram, link: "https://instagram.com" },
+          ].map((social) => (
+            <a
+              key={social.name}
+              href={social.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <social.icon className="h-6 w-6" />
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className="rounded-3xl border border-bar-foreground/10 bg-bar-foreground/5 p-8">
-            <div className="flex items-center gap-3 text-sm text-bar-foreground/70">
-              <Wallet className="h-4 w-4" /> Estimated cost per 1,000 miles
-            </div>
-            <div className="mt-2 text-6xl font-bold text-primary-glow" style={{ fontFamily: "var(--font-display)" }}>
-              $38
-            </div>
-            <div className="mt-1 text-sm text-bar-foreground/60">vs. ~$160 for an equivalent gas vehicle</div>
-            <div className="mt-8 h-2 overflow-hidden rounded-full bg-bar-foreground/10">
-              <div className="h-full w-[24%] rounded-full bg-primary" />
-            </div>
-            <p className="mt-3 text-xs text-bar-foreground/50">Based on US average residential and DC fast-charge rates.</p>
-          </div>
+              </div>
+              <h3 className="font-semibold mb-1">{social.name}</h3>
+              <p className="text-sm text-primary font-medium mb-3">{social.handle}</p>
+              <p className="text-sm text-muted-foreground mb-4">{social.desc}</p>
+              <p className="text-xs text-muted-foreground font-semibold">{social.followers}</p>
+            </a>
+          ))}
         </div>
       </section>
 
       {/* CTA */}
-      <section id="story" className="mx-auto max-w-5xl px-5 py-24 text-center">
+      <section className="mx-auto max-w-5xl px-5 py-24 text-center bg-muted/30 rounded-3xl my-20">
         <h2 className="text-4xl font-bold tracking-tight sm:text-5xl" style={{ fontFamily: "var(--font-display)" }}>
-          Ready to drive the next chapter?
+          Don't miss out! Claim your <span className="text-primary">free Volthaus</span> today.
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-          Reserve any 2025 Volthaus with a fully refundable deposit. Build, configure, and we'll
-          deliver — globally.
+          Limited time offer. Register now, select your model, pay delivery, and drive your new Volthaus within 14 days.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <a
-            href="#models"
+            href="/participate"
             className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-elevated)] hover:bg-primary-glow"
           >
-            Start Your Configuration <ArrowRight className="h-4 w-4" />
+            🚗 Claim Your Free Volthaus <ArrowRight className="h-4 w-4" />
           </a>
           <a
-            href="#tech"
+            href="#instructions"
             className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-6 py-3.5 text-sm font-semibold text-foreground hover:bg-muted"
           >
-            Explore the Technology
+            How It Works
           </a>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-muted/40">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-5 py-8 text-sm text-muted-foreground sm:flex-row">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Zap className="h-4 w-4" />
+      <footer className="border-t border-border bg-foreground text-background">
+        <div className="mx-auto max-w-7xl px-5 py-12">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                  <Zap className="h-4 w-4" />
+                </div>
+                <span className="font-bold">Volthaus Motors</span>
+              </div>
             </div>
-            <span className="font-semibold text-foreground" style={{ fontFamily: "var(--font-display)" }}>
-              Volthaus Motors
-            </span>
+            <div>
+              <h4 className="font-bold mb-4">Giveaway</h4>
+              <ul className="space-y-2 text-sm opacity-75">
+                <li><a href="#giveaway" className="hover:opacity-100">Home</a></li>
+                <li><a href="#instructions" className="hover:opacity-100">How It Works</a></li>
+                <li><a href="#participate" className="hover:opacity-100">Claim Car</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4">Support</h4>
+              <ul className="space-y-2 text-sm opacity-75">
+                <li><a href="#" className="hover:opacity-100">FAQs</a></li>
+                <li><a href="#" className="hover:opacity-100">Contact</a></li>
+                <li><a href="#" className="hover:opacity-100">Help Center</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm opacity-75">
+                <li><a href="#" className="hover:opacity-100">Privacy</a></li>
+                <li><a href="#" className="hover:opacity-100">Terms</a></li>
+                <li><a href="#" className="hover:opacity-100">Disclaimer</a></li>
+              </ul>
+            </div>
           </div>
-          <p>© 2025 Volthaus Motors. A fictional brand built for design practice.</p>
-          <div className="flex gap-5">
-            <a href="#" className="hover:text-foreground">Privacy</a>
-            <a href="#" className="hover:text-foreground">Terms</a>
-            <a href="#" className="hover:text-foreground">Press</a>
+
+          <div className="border-t border-background/20 pt-8">
+            <p className="text-sm opacity-75">
+              © 2025 Volthaus Motors Official Giveaway. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
