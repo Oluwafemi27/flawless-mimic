@@ -427,32 +427,133 @@ function Index() {
             </p>
           </div>
 
-          {/* YouTube Video Embed */}
-          <div className="rounded-2xl overflow-hidden border border-border shadow-[var(--shadow-elevated)]">
-            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/XTeWKmlNmN8?autoplay=0&controls=1&modestbranding=1"
-                title="Tesla Global Car Giveaway - Official Announcement"
-                allowFullScreen
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              />
+          {/* YouTube-style Video Frame */}
+          <div className="rounded-2xl overflow-hidden border border-border bg-card shadow-[var(--shadow-elevated)]">
+            {/* Video Player */}
+            <div className="rounded-lg overflow-hidden border-b border-border">
+              <div className="relative w-full bg-black" style={{ paddingBottom: "56.25%" }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/embed/XTeWKmlNmN8?autoplay=0&controls=1&modestbranding=1"
+                  title="Tesla Global Car Giveaway - Official Announcement"
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Video Stats */}
-          <div className="mt-8 grid sm:grid-cols-3 gap-6">
-            <div className="rounded-lg bg-muted p-6 text-center">
-              <p className="text-2xl font-bold text-primary">28.4M</p>
-              <p className="text-sm text-muted-foreground mt-1">Subscribers</p>
-            </div>
-            <div className="rounded-lg bg-muted p-6 text-center">
-              <p className="text-2xl font-bold text-primary">970K</p>
-              <p className="text-sm text-muted-foreground mt-1">Views in 24h</p>
-            </div>
-            <div className="rounded-lg bg-muted p-6 text-center">
-              <p className="text-2xl font-bold text-primary">70,842</p>
-              <p className="text-sm text-muted-foreground mt-1">Comments</p>
+            {/* Channel Info & Actions */}
+            <div className="p-6">
+              <div className="flex items-center justify-between gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                    <Zap className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-foreground">Tesla Official</p>
+                    <p className="text-sm text-muted-foreground">28.4M subscribers</p>
+                  </div>
+                </div>
+                <button className="bg-primary text-primary-foreground font-bold px-6 py-2 rounded-full hover:bg-primary-glow transition">
+                  Subscribe
+                </button>
+              </div>
+
+              {/* Engagement Buttons */}
+              <div className="flex flex-wrap gap-3 mb-6">
+                <button className="flex items-center gap-2 bg-muted hover:bg-muted/80 text-foreground px-4 py-2 rounded-full text-sm font-semibold transition">
+                  👍 1.2M
+                </button>
+                <button className="flex items-center gap-2 bg-muted hover:bg-muted/80 text-foreground px-4 py-2 rounded-full text-sm font-semibold transition">
+                  👎
+                </button>
+                <button className="flex items-center gap-2 bg-muted hover:bg-muted/80 text-foreground px-4 py-2 rounded-full text-sm font-semibold transition">
+                  🔗 Share
+                </button>
+                <button className="flex items-center gap-2 bg-muted hover:bg-muted/80 text-foreground px-4 py-2 rounded-full text-sm font-semibold transition">
+                  ⬇️ Download
+                </button>
+              </div>
+
+              {/* Comments Header */}
+              <div className="border-t border-border pt-6">
+                <h3 className="font-bold text-foreground mb-4">Comments · 70,842</h3>
+
+                {/* Comments List */}
+                <div className="space-y-4">
+                  {[
+                    {
+                      name: "Mike Johnson",
+                      time: "2 days ago",
+                      pinned: true,
+                      avatar: "MJ",
+                      color: "bg-blue-500",
+                      text: "Just received my Tesla Model 3 2024! I paid the delivery fee and within 9 days the car was at my door. This is REAL! 🚗⚡",
+                      likes: "48.2K",
+                    },
+                    {
+                      name: "Sarah Williams",
+                      time: "1 day ago",
+                      pinned: false,
+                      avatar: "SW",
+                      color: "bg-pink-500",
+                      text: "I received my Tesla Model Y 2025 after paying the delivery fee. I cried when I saw the car parked outside! 🙏",
+                      likes: "32.4K",
+                    },
+                    {
+                      name: "Carlos Mendez",
+                      time: "3 days ago",
+                      pinned: false,
+                      avatar: "CM",
+                      color: "bg-green-500",
+                      text: "From Mexico! I received my Tesla Model 3 2024 after paying the delivery fee. This giveaway is 100% real!",
+                      likes: "29.2K",
+                    },
+                    {
+                      name: "David Chen",
+                      time: "2 days ago",
+                      pinned: false,
+                      avatar: "DC",
+                      color: "bg-purple-500",
+                      text: "I was skeptical at first but I paid the delivery fee and received my Tesla Model S 2025. So real!",
+                      likes: "26.1K",
+                    },
+                    {
+                      name: "Amara Osei",
+                      time: "1 day ago",
+                      pinned: false,
+                      avatar: "AO",
+                      color: "bg-amber-500",
+                      text: "From Ghana 🇬🇭 I paid the delivery fee and received my Tesla Model 3 2025! God bless Tesla!",
+                      likes: "24K",
+                    },
+                  ].map((comment, idx) => (
+                    <div key={idx} className="flex gap-3">
+                      <div
+                        className={`${comment.color} w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold text-sm`}
+                      >
+                        {comment.avatar}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <p className="font-bold text-foreground text-sm">{comment.name}</p>
+                          <span className="text-xs text-muted-foreground">{comment.time}</span>
+                          {comment.pinned && (
+                            <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded">
+                              Pinned
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">{comment.text}</p>
+                        <div className="flex gap-4 mt-2 text-xs text-muted-foreground">
+                          <button className="hover:text-foreground">👍 {comment.likes}</button>
+                          <button className="hover:text-foreground">Reply</button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
