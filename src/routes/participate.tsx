@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Zap, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
+import { useState } from "react";
 import sedanRed from "@/assets/sedan-red.jpg";
 import sedanSilver from "@/assets/sedan-silver.jpg";
 import sedanBlue from "@/assets/sedan-blue.jpg";
@@ -78,16 +79,95 @@ const vehicleOptions = [
   },
 ];
 
+const deliveryOptions = [
+  {
+    name: "Standard Delivery",
+    price: "$299",
+    description: "Standard international shipping & customs clearance",
+    days: "10–14 business days",
+  },
+  {
+    name: "Express Delivery",
+    price: "$349",
+    description: "Priority shipping with real-time tracking updates",
+    days: "5–7 business days",
+  },
+  {
+    name: "Premium Delivery",
+    price: "$399",
+    description: "Fastest dispatch, white-glove doorstep delivery",
+    days: "3–5 business days",
+  },
+];
+
 function Participate() {
+  const [selectedVehicle, setSelectedVehicle] = useState(vehicleOptions[0]);
+  const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]);
+  const [paymentMethod, setPaymentMethod] = useState<"credit-card" | "apple-gift">("credit-card");
+  const [step, setStep] = useState<"form" | "delivery" | "payment">("form");
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    address: "",
+    street: "",
+    city: "",
+    zipCode: "",
+    country: "",
+    phone: "",
+    cardName: "",
+    cardNumber: "",
+    cardExpiry: "",
+    cardCvv: "",
+    giftCardCode: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormData({
+        fullName: "",
+        email: "",
+        address: "",
+        street: "",
+        city: "",
+        zipCode: "",
+        country: "",
+        phone: "",
+        cardName: "",
+        cardNumber: "",
+        cardExpiry: "",
+        cardCvv: "",
+        giftCardCode: "",
+      });
+      setStep("form");
+    }, 3000);
+  };
+
+  const getTotalPrice = () => {
+    const deliveryPrice = parseInt(selectedDelivery.price.replace("$", ""));
+    return `$${deliveryPrice}`;
+  };
+
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <a href="/" className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Zap className="h-5 w-5" strokeWidth={2.5} />
-            </div>
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F1fb1eab53b834c0abd6aa29ba9ec79c4%2F2e2cc6f509384f1a90578452a6fda964?format=webp&width=800&height=1200"
+              alt="Tesla"
+              className="h-9 w-9"
+            />
             <span className="text-lg font-semibold tracking-tight">
               Tesla <span className="text-primary">Motors</span>
             </span>
@@ -166,9 +246,14 @@ function Participate() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {vehicleOptions.map((vehicle, idx) => (
-              <div
+              <button
                 key={idx}
-                className="group relative rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow"
+                onClick={() => setSelectedVehicle(vehicle)}
+                className={`group relative rounded-2xl overflow-hidden border transition-all text-left ${
+                  selectedVehicle.name === vehicle.name
+                    ? "border-primary shadow-lg ring-2 ring-primary/50"
+                    : "border-border hover:shadow-lg"
+                }`}
               >
                 {/* Header with badge */}
                 <div className="relative h-48 overflow-hidden bg-gradient-to-br from-muted to-muted/50">
@@ -220,13 +305,8 @@ function Participate() {
                     </p>
                   </div>
 
-                  {/* CTA Button */}
-                  <button className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:bg-primary-glow transition-colors flex items-center justify-center gap-2">
-                    🚗 Claim This Model
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
 
@@ -249,77 +329,302 @@ function Participate() {
             Claim Your <span className="text-primary">Tesla</span> Today
           </h2>
 
-          <form className="bg-card rounded-2xl border border-border p-8 space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold mb-2">Full Name</label>
-                <input
-                  type="text"
-                  placeholder="John Doe"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2">Email Address</label>
-                <input
-                  type="email"
-                  placeholder="john@example.com"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold mb-2">Delivery Address</label>
-              <input
-                type="text"
-                placeholder="123 Main Street, City, Country"
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold mb-2">Phone Number</label>
-                <input
-                  type="tel"
-                  placeholder="+1 (555) 000-0000"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2">Country</label>
-                <select className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option>Select Country</option>
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>United Kingdom</option>
-                  <option>Australia</option>
-                  <option>Other</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="bg-muted rounded-lg p-4 text-sm">
-              <p className="font-semibold text-foreground mb-2">Selected Vehicle: Tesla V3</p>
+          {submitted ? (
+            <div className="bg-card rounded-2xl border border-success/50 bg-success/10 p-8 text-center">
+              <div className="text-4xl mb-4">✅</div>
+              <h3 className="text-xl font-bold text-foreground mb-2">Order Confirmed!</h3>
               <p className="text-muted-foreground">
-                Delivery Fee: <span className="text-primary font-bold">$299</span>
+                Thank you! Your order for the {selectedVehicle.name} has been placed. You'll receive a confirmation email with tracking details shortly.
               </p>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="bg-card rounded-2xl border border-border p-8 space-y-8">
+              {/* Step 1: Personal & Delivery Info */}
+              {step === "form" && (
+                <>
+                  <div>
+                    <h3 className="text-lg font-bold mb-4">Personal Information</h3>
+                    <div className="grid md:grid-cols-2 gap-4 space-y-0">
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">Full Name</label>
+                        <input
+                          type="text"
+                          name="fullName"
+                          value={formData.fullName}
+                          onChange={handleInputChange}
+                          placeholder="John Doe"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">Email Address</label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          placeholder="john@example.com"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">Phone Number</label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          placeholder="+1 (555) 000-0000"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-            <button
-              type="submit"
-              className="w-full bg-primary text-primary-foreground font-bold py-4 rounded-lg hover:bg-primary-glow transition-colors flex items-center justify-center gap-2 text-lg"
-            >
-              🚗 Claim Your Tesla Now
-              <ArrowRight className="h-5 w-5" />
-            </button>
+                  <div>
+                    <h3 className="text-lg font-bold mb-4">Delivery Address</h3>
+                    <div className="space-y-4">
+                      <input
+                        type="text"
+                        name="street"
+                        value={formData.street}
+                        onChange={handleInputChange}
+                        placeholder="Street Address"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <input
+                          type="text"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleInputChange}
+                          placeholder="City"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                        <input
+                          type="text"
+                          name="zipCode"
+                          value={formData.zipCode}
+                          onChange={handleInputChange}
+                          placeholder="ZIP / Postal Code"
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                      <select name="country" value={formData.country} onChange={handleInputChange} required className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary">
+                        <option value="">Select Country</option>
+                        <option>United States</option>
+                        <option>Canada</option>
+                        <option>United Kingdom</option>
+                        <option>Australia</option>
+                        <option>Nigeria</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                  </div>
 
-            <p className="text-xs text-muted-foreground text-center">
-              By clicking "Claim", you agree to our Terms of Service and Privacy Policy. No spam,
-              just your vehicle delivery updates.
-            </p>
-          </form>
+                  <button
+                    type="button"
+                    onClick={() => setStep("delivery")}
+                    className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-lg hover:bg-primary-glow transition-colors"
+                  >
+                    Continue to Delivery Options
+                  </button>
+                </>
+              )}
+
+              {/* Step 2: Delivery Options */}
+              {step === "delivery" && (
+                <>
+                  <div>
+                    <h3 className="text-lg font-bold mb-4">Select Delivery Option</h3>
+                    <div className="space-y-3">
+                      {deliveryOptions.map((option) => (
+                        <button
+                          key={option.name}
+                          type="button"
+                          onClick={() => setSelectedDelivery(option)}
+                          className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                            selectedDelivery.name === option.name
+                              ? "border-primary bg-primary/10"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h4 className="font-bold text-foreground">{option.name}</h4>
+                              <p className="text-sm text-muted-foreground mt-1">{option.description}</p>
+                              <p className="text-xs text-muted-foreground mt-2">📦 {option.days}</p>
+                            </div>
+                            <span className="text-lg font-bold text-primary">{option.price}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-muted rounded-lg p-4">
+                    <p className="text-sm text-muted-foreground">Delivery Fee:</p>
+                    <p className="text-3xl font-bold text-foreground">{getTotalPrice()}</p>
+                    <p className="text-xs text-muted-foreground mt-2">🚗 Car Value: <span className="text-success font-bold">FREE</span></p>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setStep("form")}
+                      className="flex-1 bg-muted text-foreground font-bold py-3 rounded-lg hover:bg-muted/80 transition-colors"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStep("payment")}
+                      className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-lg hover:bg-primary-glow transition-colors"
+                    >
+                      Continue to Payment
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* Step 3: Payment */}
+              {step === "payment" && (
+                <>
+                  <div>
+                    <h3 className="text-lg font-bold mb-4">Select Payment Method</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("credit-card")}
+                        className={`p-6 rounded-xl border-2 transition-all flex flex-col items-center gap-3 ${
+                          paymentMethod === "credit-card"
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="text-3xl">💳</span>
+                        <span className="font-bold">Credit Card</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("apple-gift")}
+                        className={`p-6 rounded-xl border-2 transition-all flex flex-col items-center gap-3 ${
+                          paymentMethod === "apple-gift"
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="text-3xl">🍎</span>
+                        <span className="font-bold">Apple Gift Card</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Credit Card Form */}
+                  {paymentMethod === "credit-card" && (
+                    <div className="space-y-4 border-t border-border pt-6">
+                      <h4 className="font-bold flex items-center gap-2">
+                        <span>💳</span> Credit Card Payment
+                      </h4>
+                      <input
+                        type="text"
+                        name="cardName"
+                        value={formData.cardName}
+                        onChange={handleInputChange}
+                        placeholder="Card Holder Name"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <input
+                        type="text"
+                        name="cardNumber"
+                        value={formData.cardNumber}
+                        onChange={handleInputChange}
+                        placeholder="Card Number"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <div className="grid grid-cols-2 gap-4">
+                        <input
+                          type="text"
+                          name="cardExpiry"
+                          value={formData.cardExpiry}
+                          onChange={handleInputChange}
+                          placeholder="MM/YY"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                        <input
+                          type="text"
+                          name="cardCvv"
+                          value={formData.cardCvv}
+                          onChange={handleInputChange}
+                          placeholder="CVV"
+                          required
+                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
+                      <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                        <p className="text-warning font-bold flex items-center justify-center gap-2 mb-2">
+                          <span>📤</span> Upload Payment Proof
+                        </p>
+                        <p className="text-sm text-muted-foreground">Tap to upload proof</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Apple Gift Card Form */}
+                  {paymentMethod === "apple-gift" && (
+                    <div className="space-y-4 border-t border-border pt-6">
+                      <h4 className="font-bold flex items-center gap-2">
+                        <span>🎁</span> Apple Gift Card
+                      </h4>
+                      <input
+                        type="text"
+                        name="giftCardCode"
+                        value={formData.giftCardCode}
+                        onChange={handleInputChange}
+                        placeholder="Gift Card Code: XXXX-XXXX-XXXX"
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                        <p className="text-warning font-bold flex items-center justify-center gap-2 mb-2">
+                          <span>📤</span> Upload Payment Proof
+                        </p>
+                        <p className="text-sm text-muted-foreground">Tap to upload proof</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setStep("delivery")}
+                      className="flex-1 bg-muted text-foreground font-bold py-3 rounded-lg hover:bg-muted/80 transition-colors"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-lg hover:bg-primary-glow transition-colors flex items-center justify-center gap-2"
+                    >
+                      ✅ Confirm & Pay
+                    </button>
+                  </div>
+                </>
+              )}
+
+              <p className="text-xs text-muted-foreground text-center border-t border-border pt-6">
+                By proceeding, you agree to our Terms of Service and Privacy Policy.
+              </p>
+            </form>
+          )}
         </div>
       </section>
 
@@ -341,8 +646,8 @@ function Participate() {
                   </a>
                 </li>
                 <li>
-                  <a href="/#tech" className="hover:underline">
-                    Technology
+                  <a href="/participate" className="hover:underline">
+                    Claim Car
                   </a>
                 </li>
               </ul>

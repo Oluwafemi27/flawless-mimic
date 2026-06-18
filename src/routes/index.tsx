@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import {
   ShieldCheck,
   Lock,
-  Zap,
   BadgeCheck,
   Globe2,
   Menu,
@@ -99,7 +98,6 @@ function Index() {
   const [currentTxIndex, setCurrentTxIndex] = useState(0);
   const [showNotification, setShowNotification] = useState(true);
   const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
 
   // Handle swipe to dismiss
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -107,11 +105,7 @@ function Index() {
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    setTouchEnd(e.changedTouches[0].clientX);
-    handleSwipe(e);
-  };
-
-  const handleSwipe = (e: React.TouchEvent) => {
+    const touchEnd = e.changedTouches[0].clientX;
     const swipeDistance = touchStart - touchEnd;
     if (Math.abs(swipeDistance) > 50) {
       setShowNotification(false);
@@ -124,6 +118,8 @@ function Index() {
 
   // Auto-rotate transactions with popup show/hide
   useEffect(() => {
+    const timers: NodeJS.Timeout[] = [];
+
     const cycle = () => {
       setShowNotification(true);
       const showTimer = setTimeout(() => {
@@ -131,27 +127,18 @@ function Index() {
         const hideTimer = setTimeout(() => {
           setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
         }, 400);
-        return () => clearTimeout(hideTimer);
+        timers.push(hideTimer);
       }, 3500);
-      return () => clearTimeout(showTimer);
+      timers.push(showTimer);
     };
 
     cycle();
-    const rotateInterval = setInterval(() => {
-      setShowNotification(true);
-      const showTimer = setTimeout(() => {
-        setShowNotification(false);
-        const hideTimer = setTimeout(() => {
-          setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
-        }, 400);
-        return () => clearTimeout(hideTimer);
-      }, 3500);
-      return () => {
-        clearTimeout(showTimer);
-      };
-    }, 3900);
+    const rotateInterval = setInterval(cycle, 3900);
 
-    return () => clearInterval(rotateInterval);
+    return () => {
+      clearInterval(rotateInterval);
+      timers.forEach(clearTimeout);
+    };
   }, []);
 
   const currentTx = transactions[currentTxIndex];
@@ -173,7 +160,11 @@ function Index() {
             256-bit SSL Secured
           </span>
           <span className="flex items-center gap-2">
-            <Zap className="h-3.5 w-3.5 text-warning" />
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F1fb1eab53b834c0abd6aa29ba9ec79c4%2F2e2cc6f509384f1a90578452a6fda964?format=webp&width=800&height=1200"
+              alt="Tesla"
+              className="h-3.5 w-3.5"
+            />
             Over-the-Air Updates
           </span>
           <span className="flex items-center gap-2">
@@ -237,9 +228,11 @@ function Index() {
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <a href="#" className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Zap className="h-5 w-5" strokeWidth={2.5} />
-            </div>
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F1fb1eab53b834c0abd6aa29ba9ec79c4%2F2e2cc6f509384f1a90578452a6fda964?format=webp&width=800&height=1200"
+              alt="Tesla"
+              className="h-9 w-9"
+            />
             <span
               className="text-lg font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-display)" }}
@@ -254,7 +247,7 @@ function Index() {
             <a href="#instructions" className="hover:text-foreground">
               How It Works
             </a>
-            <a href="#participate" className="hover:text-foreground">
+            <a href="#models" className="hover:text-foreground">
               Claim Free Car
             </a>
             <a href="#deliveries" className="hover:text-foreground">
@@ -447,7 +440,11 @@ function Index() {
               <div className="flex items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                    <Zap className="w-6 h-6 text-white" />
+                    <img
+                      src="https://cdn.builder.io/api/v1/image/assets%2F1fb1eab53b834c0abd6aa29ba9ec79c4%2F2e2cc6f509384f1a90578452a6fda964?format=webp&width=800&height=1200"
+                      alt="Tesla"
+                      className="w-6 h-6"
+                    />
                   </div>
                   <div>
                     <p className="font-bold text-foreground">Tesla Official</p>
@@ -1076,10 +1073,12 @@ function Index() {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                  <Zap className="h-4 w-4" />
-                </div>
-                <span className="font-bold">Tesla Motors</span>
+                <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F1fb1eab53b834c0abd6aa29ba9ec79c4%2F2e2cc6f509384f1a90578452a6fda964?format=webp&width=800&height=1200"
+              alt="Tesla"
+              className="h-8 w-8"
+            />
+            <span className="font-bold">Tesla Motors</span>
               </div>
             </div>
             <div>
