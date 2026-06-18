@@ -98,6 +98,29 @@ function Index() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentTxIndex, setCurrentTxIndex] = useState(0);
   const [showNotification, setShowNotification] = useState(true);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  // Handle swipe to dismiss
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    setTouchEnd(e.changedTouches[0].clientX);
+    handleSwipe(e);
+  };
+
+  const handleSwipe = (e: React.TouchEvent) => {
+    const swipeDistance = touchStart - touchEnd;
+    if (Math.abs(swipeDistance) > 50) {
+      setShowNotification(false);
+      setTimeout(() => {
+        setShowNotification(true);
+        setCurrentTxIndex((prev) => (prev + 1) % transactions.length);
+      }, 400);
+    }
+  };
 
   // Auto-rotate transactions with popup show/hide
   useEffect(() => {
@@ -162,33 +185,34 @@ function Index() {
 
       {/* Live Delivery Notification Card - Popup Mode */}
       {showNotification && (
-        <div className="fixed top-20 left-0 right-0 z-50 px-4 pointer-events-none animate-in fade-in slide-in-from-top-2 duration-150">
-          <div className="mx-auto max-w-md bg-white rounded-lg shadow-lg border border-gray-100 px-3 py-2 pointer-events-auto">
-            {/* Header with avatar */}
-            <div className="flex items-start gap-2 mb-1">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary rounded-full flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 className="w-4 h-4 text-white" />
+        <div
+          className="fixed top-16 left-0 right-0 z-50 px-4 pointer-events-none animate-in fade-in slide-in-from-top-2 duration-150"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="mx-auto max-w-sm bg-white rounded-lg shadow-lg border border-gray-100 px-2.5 py-1.5 pointer-events-auto cursor-grab active:cursor-grabbing">
+            {/* Header with avatar - compact */}
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <div className="w-6 h-6 bg-gradient-to-br from-primary to-primary rounded-full flex items-center justify-center flex-shrink-0">
+                <CheckCircle2 className="w-3 h-3 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-bold text-foreground text-xs truncate">{currentTx.name}</p>
-                <p className="text-xs text-muted-foreground">{currentTx.country}</p>
+                <p className="font-bold text-foreground text-xs truncate">
+                  {currentTx.name} {currentTx.country}
+                </p>
               </div>
             </div>
 
-            {/* Message */}
-            <p className="text-xs text-muted-foreground mb-0.5 ml-10">Just paid delivery fee for</p>
-            <p className="text-xs font-bold text-primary mb-1 ml-10">{currentTx.model}</p>
+            {/* Message - inline */}
+            <p className="text-xs text-muted-foreground mb-0.5 ml-8">
+              Paid {currentTx.fee} for {currentTx.model}
+            </p>
 
             {/* Confirmation */}
-            <p className="text-xs font-bold text-success mb-0.5 ml-10">
-              🚗 Car confirmed & dispatched!
-            </p>
-            <p className="text-xs font-bold text-success mb-1.5 ml-10">
-              ({currentTx.fee} fee paid)
-            </p>
+            <p className="text-xs font-bold text-success ml-8">🚗 Confirmed & dispatched!</p>
 
             {/* Progress bar */}
-            <div className="h-0.5 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-0.5 bg-gray-200 rounded-full overflow-hidden mt-1">
               <div className="h-full bg-primary rounded-full drain-progress" />
             </div>
           </div>
