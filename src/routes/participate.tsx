@@ -8,16 +8,6 @@ import suvWhite from "@/assets/suv-white.jpg";
 import suvBlack from "@/assets/suv-black.jpg";
 
 export const Route = createFileRoute("/participate")({
-  head: () => ({
-    meta: [
-      { title: "Claim Your Tesla — Free Electric Vehicle" },
-      {
-        name: "description",
-        content:
-          "Register to claim your free Tesla electric vehicle. Choose from V3, VY, VS Plaid, or VX models.",
-      },
-    ],
-  }),
   component: Participate,
 });
 
