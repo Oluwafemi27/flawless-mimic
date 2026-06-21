@@ -7,16 +7,8 @@ import {
   Globe2,
   Menu,
   X,
-  Play,
   ArrowRight,
-  Battery,
-  Gauge,
-  Sparkles,
-  Wallet,
-  Cpu,
   CheckCircle2,
-  Users,
-  MessageCircle,
   Facebook,
   Twitter,
   Instagram,
@@ -28,21 +20,6 @@ import suvWhite from "@/assets/suv-white.jpg";
 import suvBlack from "@/assets/suv-black.jpg";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Tesla Motors — Electric Performance, Reimagined" },
-      {
-        name: "description",
-        content:
-          "Volthaus Motors designs long-range electric vehicles built around silent power, software-first interiors, and a global supercharging network.",
-      },
-      { property: "og:title", content: "Tesla Motors" },
-      {
-        property: "og:description",
-        content: "Long-range electric vehicles, software-first interiors, global charging network.",
-      },
-    ],
-  }),
   component: Index,
 });
 
