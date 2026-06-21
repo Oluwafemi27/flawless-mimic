@@ -30,7 +30,7 @@ const vehicleOptions = [
     range: "358 mi Range",
     delivery: "7–10 Business Days",
     shipsTo: "All Countries",
-    fee: "$299",
+    fee: "$18,999",
     img: sedanSilver,
   },
   {
@@ -41,7 +41,7 @@ const vehicleOptions = [
     range: "330 mi Range",
     delivery: "5–7 Business Days",
     shipsTo: "All Countries",
-    fee: "$349",
+    fee: "$24,999",
     img: suvWhite,
   },
   {
@@ -52,7 +52,7 @@ const vehicleOptions = [
     range: "405 mi Range",
     delivery: "3–5 Business Days",
     shipsTo: "All Countries",
-    fee: "$399",
+    fee: "$29,999",
     img: sedanBlue,
   },
   {
@@ -63,7 +63,7 @@ const vehicleOptions = [
     range: "348 mi Range",
     delivery: "10–14 Business Days",
     shipsTo: "All Countries",
-    fee: "$249",
+    fee: "$28,999",
     img: suvBlack,
   },
   {
@@ -74,7 +74,7 @@ const vehicleOptions = [
     range: "272 mi Range",
     delivery: "10–14 Business Days",
     shipsTo: "All Countries",
-    fee: "$199",
+    fee: "$12,999",
     img: sedanRed,
   },
 ];
