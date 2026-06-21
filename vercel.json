@@ -1,18 +1,1 @@
-{
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/client",
-  "framework": "other",
-  "regions": ["sfo1"],
-  "functions": {
-    "api/**/*.js": {
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/((?!.*\\.).*)",
-      "destination": "/api/index.js"
-    }
-  ]
-}
+{"buildCommand":"npm run build","outputDirectory":"dist","framework":"vite","installCommand":"npm install"}
