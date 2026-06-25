@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Toaster, toast } from "sonner";
 
 const PASSWORD = "5251";
+// Secret page with password protection
 
 export const Route = createFileRoute("/secret")({
   component: SecretPage,
