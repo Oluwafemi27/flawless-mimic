@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "mkdir -p dist && cp index.html dist/index.html",
-    "dev": "echo dev"
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
   }
 }
