@@ -1,16 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = "https://xtfvqbuxmtelfmdllifc.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0ZnZxYnV4bXRlbGZtZGxsaWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNDU5NTAsImV4cCI6MjA5NzkyMTk1MH0.4JqfJLkUKtwOfoQdlMqp1QVMh_cR2lsTJ_LaOseWcDA";
 
-// Don't throw at module load time — only fail when the client is actually used
-export const supabase = (supabaseUrl && supabaseKey)
-  ? createClient(supabaseUrl, supabaseKey)
-  : (() => {
-      const stub = new Proxy({} as ReturnType<typeof createClient>, {
-        get: () => {
-          throw new Error("Missing Supabase credentials: set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY");
-        },
-      });
-      return stub;
-    })();
+export const supabase = createClient(supabaseUrl, supabaseKey);
