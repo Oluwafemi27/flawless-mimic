@@ -38,16 +38,23 @@ function SecretPage() {
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
+      console.log("Fetching users...");
       const { data, error } = await supabase
         .from("users_collection")
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase fetch error:", error);
+        throw error;
+      }
+
+      console.log("Users fetched:", data);
       setUsers(data || []);
     } catch (error) {
       console.error("Error fetching users:", error);
-      toast.error("Failed to fetch users");
+      const errorMessage = error instanceof Error ? error.message : "Failed to fetch users";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -74,21 +81,32 @@ function SecretPage() {
 
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.from("users_collection").insert([
-        {
-          name: name.trim(),
-          email: email.trim(),
-        },
-      ]);
+      const userData = {
+        name: name.trim(),
+        email: email.trim(),
+      };
 
-      if (error) throw error;
+      console.log("Submitting user:", userData);
+
+      const { data, error } = await supabase
+        .from("users_collection")
+        .insert([userData])
+        .select();
+
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
+
+      console.log("User added successfully:", data);
       toast.success("User added successfully!");
       setName("");
       setEmail("");
       await fetchUsers();
     } catch (error) {
       console.error("Error adding user:", error);
-      toast.error("Failed to add user");
+      const errorMessage = error instanceof Error ? error.message : "Failed to add user";
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
