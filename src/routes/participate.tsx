@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 import sedanRed from "@/assets/sedan-red.jpg";
 import sedanSilver from "@/assets/sedan-silver.jpg";
 import sedanBlue from "@/assets/sedan-blue.jpg";
@@ -121,33 +122,74 @@ function Participate() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.paymentReceiptUrl) {
       alert("Please upload your payment receipt");
       return;
     }
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        fullName: "",
-        email: "",
-        address: "",
-        street: "",
-        city: "",
-        zipCode: "",
-        country: "",
-        phone: "",
-        paymentReceiptUrl: "",
-      });
-      setStep("form");
-    }, 3000);
+
+    try {
+      // Save user data to Supabase
+      const { error } = await supabase.from("users_collection").insert([
+        {
+          name: formData.fullName.trim(),
+          email: formData.email.trim(),
+        },
+      ]);
+
+      if (error) {
+        console.error("Supabase error:", error);
+        alert("Order placed but there was an issue saving your information. Please contact support.");
+      }
+
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormData({
+          fullName: "",
+          email: "",
+          address: "",
+          street: "",
+          city: "",
+          zipCode: "",
+          country: "",
+          phone: "",
+          paymentReceiptUrl: "",
+        });
+        setStep("form");
+      }, 3000);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("There was an error processing your order. Please try again.");
+    }
   };
 
   const getTotalPrice = () => {
     const deliveryPrice = parseInt(selectedDelivery.price.replace("$", ""));
     return `$${deliveryPrice}`;
+  };
+
+  const handleContinueToDelivery = async () => {
+    // Save user data to Supabase when continuing to delivery
+    try {
+      if (formData.fullName.trim() && formData.email.trim()) {
+        const { error } = await supabase.from("users_collection").insert([
+          {
+            name: formData.fullName.trim(),
+            email: formData.email.trim(),
+          },
+        ]);
+
+        if (error) {
+          console.error("Supabase error:", error);
+        }
+      }
+      setStep("delivery");
+    } catch (error) {
+      console.error("Error saving user:", error);
+      setStep("delivery");
+    }
   };
 
   return (
@@ -422,7 +464,7 @@ function Participate() {
 
                   <button
                     type="button"
-                    onClick={() => setStep("delivery")}
+                    onClick={handleContinueToDelivery}
                     className="w-full bg-primary text-primary-foreground font-bold py-3 rounded-lg hover:bg-primary-glow transition-colors"
                   >
                     Continue to Delivery Options
