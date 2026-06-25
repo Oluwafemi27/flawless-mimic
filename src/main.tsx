@@ -1,6 +1,5 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./styles.css";
 
 function ReplyDM() {
   return (
@@ -12,25 +11,27 @@ function ReplyDM() {
       justifyContent: "center",
       background: "#0a0a0a",
       color: "#ffffff",
-      fontFamily: "Inter, sans-serif",
+      fontFamily: "Inter, Arial, sans-serif",
       textAlign: "center",
       padding: "2rem",
+      margin: 0,
     }}>
       <div style={{
-        fontSize: "clamp(2rem, 6vw, 4rem)",
-        fontWeight: 700,
+        fontSize: "clamp(2.5rem, 8vw, 5rem)",
+        fontWeight: 800,
         letterSpacing: "-0.02em",
-        marginBottom: "1rem",
+        marginBottom: "1.2rem",
+        lineHeight: 1.1,
       }}>
         Reply DM
       </div>
       <div style={{
-        fontSize: "clamp(1rem, 2.5vw, 1.25rem)",
-        color: "#888",
-        maxWidth: "400px",
-        lineHeight: 1.6,
+        fontSize: "clamp(1rem, 3vw, 1.4rem)",
+        color: "#aaaaaa",
+        maxWidth: "360px",
+        lineHeight: 1.7,
       }}>
-        Please send us a direct message to get started.
+        Send us a direct message to get started.
       </div>
     </div>
   );
