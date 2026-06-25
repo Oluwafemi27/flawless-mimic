@@ -4,32 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reply DM</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { height: 100%; background: #0a0a0a; }
-      body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: Inter, Arial, sans-serif;
-        color: #fff;
-        text-align: center;
-        padding: 2rem;
-      }
-      h1 {
-        font-size: clamp(2.5rem, 8vw, 5rem);
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        line-height: 1.1;
-        margin-bottom: 1.2rem;
-      }
-      p { font-size: clamp(1rem, 3vw, 1.4rem); color: #aaa; max-width: 360px; line-height: 1.7; }
-    </style>
   </head>
   <body>
-    <div>
-      <h1>Reply DM</h1>
-      <p>Send us a direct message to get started.</p>
-    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
