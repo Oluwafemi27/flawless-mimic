@@ -1,22 +1,23 @@
 # Supabase Setup Instructions
 
-To complete the setup, you need to create a table in your Supabase database.
+To complete the setup, you need to create tables in your Supabase database.
 
 ## Step 1: Go to Supabase Dashboard
 1. Visit https://app.supabase.com
 2. Sign in to your account
 3. Select your project: `xtfvqbuxmtelfmdllifc`
 
-## Step 2: Create the Table
+## Step 2: Create the Tables
 1. Go to the **SQL Editor** section
 2. Click **New Query**
 3. Copy and paste the following SQL:
 
 ```sql
--- Drop existing table and policies if they exist
+-- Drop existing tables and policies if they exist
 DROP TABLE IF EXISTS users_collection CASCADE;
+DROP TABLE IF EXISTS customer_support CASCADE;
 
--- Create the table
+-- Create users_collection table
 CREATE TABLE users_collection (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
@@ -24,46 +25,66 @@ CREATE TABLE users_collection (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Create customer_support table
+CREATE TABLE customer_support (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT,
+  category TEXT,
+  subject TEXT NOT NULL,
+  message TEXT NOT NULL,
+  status TEXT DEFAULT 'open',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Enable Row Level Security
 ALTER TABLE users_collection ENABLE ROW LEVEL SECURITY;
+ALTER TABLE customer_support ENABLE ROW LEVEL SECURITY;
 
--- Create policy to allow anyone to insert
-CREATE POLICY "Allow public insert" ON users_collection
-  FOR INSERT
-  WITH CHECK (true);
+-- Users Collection Policies
+CREATE POLICY "Allow public insert on users_collection" ON users_collection
+  FOR INSERT WITH CHECK (true);
 
--- Create policy to allow anyone to select/read
-CREATE POLICY "Allow public select" ON users_collection
-  FOR SELECT
-  USING (true);
+CREATE POLICY "Allow public select on users_collection" ON users_collection
+  FOR SELECT USING (true);
 
--- Create policy to allow anyone to update
-CREATE POLICY "Allow public update" ON users_collection
-  FOR UPDATE
-  USING (true);
+CREATE POLICY "Allow public update on users_collection" ON users_collection
+  FOR UPDATE USING (true);
 
--- Create policy to allow anyone to delete
-CREATE POLICY "Allow public delete" ON users_collection
-  FOR DELETE
-  USING (true);
+CREATE POLICY "Allow public delete on users_collection" ON users_collection
+  FOR DELETE USING (true);
+
+-- Customer Support Policies
+CREATE POLICY "Allow public insert on customer_support" ON customer_support
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Allow public select on customer_support" ON customer_support
+  FOR SELECT USING (true);
+
+CREATE POLICY "Allow public update on customer_support" ON customer_support
+  FOR UPDATE USING (true);
+
+CREATE POLICY "Allow public delete on customer_support" ON customer_support
+  FOR DELETE USING (true);
 ```
 
 4. Click **Run**
 
 ## Step 3: Verify the Setup
 1. Go to the **Table Editor** section
-2. You should see the `users_collection` table
-3. Click on it to see the columns
+2. You should see both `users_collection` and `customer_support` tables
+3. Click on each to see the columns
 
-## Step 4: Access Your Secret Page
-- Your secret page is now available at `/secret`
-- Password: `5251`
-- Once authenticated, you can add and view user entries
+## Step 4: Features Available
+- **Secret Page** (`/secret`) - Password: `5251` - View collected user emails and names
+- **Contact Page** (`/contact`) - Customer service form for inquiries and support requests
+- **Participate Page** (`/participate`) - Tesla claim form that saves user data automatically
 
 ## Troubleshooting
-If users aren't saving:
+If data isn't saving:
 1. Check the browser console (F12) for error messages
 2. Go to Supabase Dashboard → SQL Editor → Check recent queries for errors
-3. Verify the RLS policies are properly set (Table Editor → users_collection → RLS dropdown)
+3. Verify the RLS policies are properly set (Table Editor → table name → RLS dropdown)
 
-That's it! Your site is now connected to Supabase.
+That's it! Your site is now fully connected to Supabase with multiple data collection features.
