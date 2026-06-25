@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ParticipateRouteImport } from './routes/participate'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SecretRouteImport } from './routes/secret'
+import { Route as ContactRouteImport } from './routes/contact'
 
 const ParticipateRoute = ParticipateRouteImport.update({
   id: '/participate',
@@ -22,31 +24,49 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SecretRoute = SecretRouteImport.update({
+  id: '/secret',
+  path: '/secret',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/participate': typeof ParticipateRoute
+  '/secret': typeof SecretRoute
+  '/contact': typeof ContactRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/participate': typeof ParticipateRoute
+  '/secret': typeof SecretRoute
+  '/contact': typeof ContactRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/participate': typeof ParticipateRoute
+  '/secret': typeof SecretRoute
+  '/contact': typeof ContactRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/participate'
+  fullPaths: '/' | '/participate' | '/secret' | '/contact'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/participate'
-  id: '__root__' | '/' | '/participate'
+  to: '/' | '/participate' | '/secret' | '/contact'
+  id: '__root__' | '/' | '/participate' | '/secret' | '/contact'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ParticipateRoute: typeof ParticipateRoute
+  SecretRoute: typeof SecretRoute
+  ContactRoute: typeof ContactRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +85,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/secret': {
+      id: '/secret'
+      path: '/secret'
+      fullPath: '/secret'
+      preLoaderRoute: typeof SecretRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ParticipateRoute: ParticipateRoute,
+  SecretRoute: SecretRoute,
+  ContactRoute: ContactRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
