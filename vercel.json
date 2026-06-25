@@ -1,11 +1,12 @@
 {
-  "outputDirectory": ".",
-  "builds": [{ "src": "index.html", "use": "@vercel/static" }],
-  "routes": [{ "src": "/(.*)", "dest": "/index.html" }],
+  "framework": "vite",
+  "buildCommand": "echo 'no build needed'",
+  "outputDirectory": "dist",
   "headers": [
     {
       "source": "/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }]
     }
-  ]
+  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
